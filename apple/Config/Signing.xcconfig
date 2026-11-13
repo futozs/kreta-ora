@@ -1,0 +1,8 @@
+// Signing settings shared by every target.
+//
+// The development team is personal, so it lives in Local.xcconfig next to
+// this file, which git ignores. Create it with one line:
+//   DEVELOPMENT_TEAM = YOURTEAMID
+// The "?" makes the include optional: without the file the project still
+// opens and builds for the simulator.
+#include? "Local.xcconfig"

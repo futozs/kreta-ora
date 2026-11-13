@@ -27,3 +27,6 @@ google-services.json
 GoogleService-Info.plist
 .env
 .env.*
+
+# Personal Xcode signing team
+apple/Config/Local.xcconfig

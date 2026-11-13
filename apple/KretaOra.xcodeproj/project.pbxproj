@@ -233,6 +233,7 @@
 		58BA434157612CF57369B718 /* KretaOraWatchWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KretaOraWatchWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA500FD00B38344073C41EA /* BricolageGrotesque.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BricolageGrotesque.ttf; sourceTree = "<group>"; };
 		5F19B39D167729E4ACC1B9A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		65038B0EB4589ECD571D5885 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		699B0274C1EB96D82F726126 /* WatchLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLink.swift; sourceTree = "<group>"; };
 		7116A6CD34DC9D76C8E286DB /* WatchModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchModel.swift; sourceTree = "<group>"; };
 		71B773B8591F1DC978C2B8FD /* LiveLessonActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLessonActivity.swift; sourceTree = "<group>"; };
@@ -508,6 +509,7 @@
 		F537CDEE41432B450D53C79B = {
 			isa = PBXGroup;
 			children = (
+				F91B59619B0B2A1FEF8EF594 /* Config */,
 				B6A1E28B37557659B42A4418 /* KretaOra */,
 				F58E6C1173DE8AD9F0FA6BBD /* KretaOraWatch */,
 				A949EDC8729E2FDD5B12A436 /* KretaOraWatchWidgets */,
@@ -541,6 +543,14 @@
 				DC3B73F271CFEB650A39D2A4 /* NextLesson */,
 			);
 			path = SharedWidgets;
+			sourceTree = "<group>";
+		};
+		F91B59619B0B2A1FEF8EF594 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				65038B0EB4589ECD571D5885 /* Signing.xcconfig */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -643,15 +653,19 @@
 				TargetAttributes = {
 					5198C7F911BB648BB01E1193 = {
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = "[\"com.apple.ApplicationGroups.iOS\": [\"enabled\": 1]]";
 					};
 					979C854A590DACAEFDF3AE1C = {
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = "[\"com.apple.ApplicationGroups.iOS\": [\"enabled\": 1]]";
 					};
 					9F04F418EE144D00BB1EA43A = {
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = "[\"com.apple.ApplicationGroups.iOS\": [\"enabled\": 1]]";
 					};
 					FED600F8A1AF8E3A5A8E1A75 = {
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = "[\"com.apple.ApplicationGroups.iOS\": [\"enabled\": 1]]";
 					};
 				};
 			};
@@ -979,6 +993,7 @@
 		};
 		C8CF7DAC7E42FF6EB02A4ABF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65038B0EB4589ECD571D5885 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1042,6 +1057,7 @@
 		};
 		F1AD2ABD415806EFE9B7F6F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65038B0EB4589ECD571D5885 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

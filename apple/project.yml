@@ -9,6 +9,10 @@ options:
   createIntermediateGroups: true
   developmentLanguage: hu
 
+configFiles:
+  Debug: Config/Signing.xcconfig
+  Release: Config/Signing.xcconfig
+
 settings:
   base:
     # Bundle identifiers must be unique per Apple account. Change this one
@@ -61,6 +65,11 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         ITSAppUsesNonExemptEncryption: false
+    # Lets Xcode register the App Group with automatic signing.
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.iOS:
+          enabled: 1
     entitlements:
       path: KretaOra/KretaOra.entitlements
       properties:
@@ -91,6 +100,11 @@ targets:
           - HankenGrotesk.ttf
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    # Lets Xcode register the App Group with automatic signing.
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.iOS:
+          enabled: 1
     entitlements:
       path: KretaOraWidgets/KretaOraWidgets.entitlements
       properties:
@@ -121,6 +135,11 @@ targets:
           - HankenGrotesk.ttf
         WKApplication: true
         WKCompanionAppBundleIdentifier: $(KRETA_BUNDLE_PREFIX)
+    # Lets Xcode register the App Group with automatic signing.
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.iOS:
+          enabled: 1
     entitlements:
       path: KretaOraWatch/KretaOraWatch.entitlements
       properties:
@@ -151,6 +170,11 @@ targets:
           - HankenGrotesk.ttf
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    # Lets Xcode register the App Group with automatic signing.
+    attributes:
+      SystemCapabilities:
+        com.apple.ApplicationGroups.iOS:
+          enabled: 1
     entitlements:
       path: KretaOraWatchWidgets/KretaOraWatchWidgets.entitlements
       properties:
