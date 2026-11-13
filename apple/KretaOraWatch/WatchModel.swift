@@ -10,6 +10,8 @@ import WidgetKit
 @MainActor
 @Observable
 final class WatchModel: NSObject {
+    static let shared = WatchModel()
+
     private(set) var snapshot: TimetableSnapshot?
 
     @ObservationIgnored private let store = AppEnvironment.snapshots
@@ -17,6 +19,9 @@ final class WatchModel: NSObject {
 
     var schedule: Schedule? { snapshot?.schedule }
 
+    /// Call once at launch. The phone can wake the watch app in the
+    /// background to refresh a complication, and no view exists then, so the
+    /// link has to be up before any view is built.
     func start() {
         snapshot = store.load()
         guard WCSession.isSupported() else { return }

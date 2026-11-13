@@ -3,13 +3,17 @@ import SwiftUI
 
 @main
 struct KretaOraWatchApp: App {
-    @State private var model = WatchModel()
+    @State private var model = WatchModel.shared
+
+    @MainActor
+    init() {
+        WatchModel.shared.start()
+    }
 
     var body: some Scene {
         WindowGroup {
             WatchRootView()
                 .environment(model)
-                .task { model.start() }
         }
     }
 }

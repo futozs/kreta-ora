@@ -15,6 +15,8 @@ enum BackgroundRefresh {
     private static let logger = Logger(subsystem: "hu.kretaora", category: "background")
 
     static func schedule() {
+        // A rejected session cannot recover in the background.
+        guard !SyncCoordinator.shared.needsLogin else { return }
         let request = BGAppRefreshTaskRequest(identifier: taskID)
         request.earliestBeginDate = Date(timeIntervalSinceNow: earliestInterval)
         do {

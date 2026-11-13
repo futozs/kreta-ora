@@ -65,15 +65,23 @@ struct TimetableProvider: TimelineProvider {
     }
 
     /// One entry per moment the picture changes: every lesson start and end,
-    /// and midnight. The app reloads the timeline after each sync, so `.atEnd`
-    /// only matters when the app has not run for a day and a half.
+    /// and midnight. The app reloads the timeline after each sync, so the
+    /// reload policy only matters when the app has not run for a while.
     func getTimeline(in context: Context, completion: @escaping (Timeline<TimetableEntry>) -> Void) {
         let now = Date()
         let schedule = storedSchedule()
         let dates = schedule?.refreshDates(from: now) ?? [now]
         let entries = dates.map { TimetableEntry(date: $0, schedule: schedule) }
-        completion(Timeline(entries: entries, policy: .atEnd))
+        // With a single entry `.atEnd` would mean "ask again immediately" and
+        // burn the widget's reload budget in a loop, so wait instead.
+        let policy: TimelineReloadPolicy = entries.count > 1
+            ? .atEnd
+            : .after(now.addingTimeInterval(Self.idleReloadInterval))
+        completion(Timeline(entries: entries, policy: policy))
     }
+
+    /// How long a widget with nothing to schedule waits before looking again.
+    private static let idleReloadInterval: TimeInterval = 6 * 3600
 
     private func storedSchedule() -> Schedule? {
         AppEnvironment.snapshots.load()?.schedule

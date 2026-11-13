@@ -163,6 +163,124 @@ struct SyncEngineTests {
         #expect(transport.requests[1].value(forHTTPHeaderField: "Authorization") == "Bearer access-1")
     }
 
+    @Test("two triggers at once spend the refresh token only once")
+    func concurrentSyncsShareOneRefresh() async throws {
+        let sessions = InMemorySessionStore(Fixture.session(expiresAt: now))
+        let arrived = Gate()
+        let release = Gate()
+        let transport = FakeTransport { request, _ in
+            guard request.isTokenRequest else { return .json("[]") }
+            await arrived.open()
+            await release.wait()
+            return .json(Fixture.tokenJSON(access: "access-1", refresh: "refresh-1"))
+        }
+        let engine = engine(transport, sessions: sessions)
+
+        let first = Task { try await engine.sync() }
+        await arrived.wait()
+        let second = Task { try await engine.sync() }
+        // Give an unserialized second sync every chance to start its own refresh.
+        try await Task.sleep(for: .milliseconds(80))
+        await release.open()
+        _ = try await first.value
+        _ = try await second.value
+
+        let refreshes = transport.requests.filter(\.isTokenRequest)
+        #expect(refreshes.count == 1)
+        #expect(refreshes.first?.form["refresh_token"] == "refresh-0")
+        #expect(sessions.load()?.tokens.refreshToken == "refresh-1")
+    }
+
+    @Test("a sync in flight cannot bring the session back after signing out")
+    func signOutWaitsForRunningSync() async throws {
+        let sessions = InMemorySessionStore(freshSession)
+        let arrived = Gate()
+        let release = Gate()
+        let transport = FakeTransport { _, _ in
+            await arrived.open()
+            await release.wait()
+            return .json("[\(Fixture.lessonJSON())]")
+        }
+        let engine = engine(transport, sessions: sessions)
+        let order = EventLog()
+
+        let sync = Task { try await engine.sync { _ in await order.add("published") } }
+        await arrived.wait()
+        let signOut = Task { try await engine.signOut { await order.add("cleared") } }
+        try await Task.sleep(for: .milliseconds(80))
+        await release.open()
+        _ = try await sync.value
+        try await signOut.value
+
+        #expect(sessions.load() == nil)
+        #expect(snapshots.load() == nil)
+        #expect(await order.events == ["published", "cleared"])
+    }
+
+    @Test("an empty answer while lessons are still ahead is not believed")
+    func emptyResponseKeepsKnownTimetable() async throws {
+        let cached = Fixture.snapshot([Fixture.lesson("a", day: 17, index: 1)])
+        try snapshots.save(cached)
+        let transport = FakeTransport { _, _ in .json("[]") }
+
+        let result = try await engine(transport, sessions: InMemorySessionStore(freshSession)).sync()
+
+        #expect(result.changes.isEmpty)
+        #expect(result.snapshot == cached)
+        #expect(snapshots.load() == cached)
+    }
+
+    @Test("an answer with only events is treated the same way")
+    func eventsOnlyResponseKeepsKnownTimetable() async throws {
+        let cached = Fixture.snapshot([Fixture.lesson("a", day: 17, index: 1)])
+        try snapshots.save(cached)
+        let transport = FakeTransport { _, _ in .json("[\(Fixture.lessonJSON(type: "TanevRendjeEsemeny"))]") }
+
+        let result = try await engine(transport, sessions: InMemorySessionStore(freshSession)).sync()
+
+        #expect(result.snapshot == cached)
+    }
+
+    @Test("an empty answer is accepted once the known lessons have passed")
+    func emptyResponseAcceptedLater() async throws {
+        try snapshots.save(Fixture.snapshot([Fixture.lesson("a", day: 17, index: 1)]))
+        let transport = FakeTransport { _, _ in .json("[]") }
+        let afterTheLesson = Fixture.date(17, 12)
+        let sessions = InMemorySessionStore(Fixture.session(expiresAt: afterTheLesson.addingTimeInterval(1800)))
+
+        let result = try await engine(transport, sessions: sessions, at: afterTheLesson).sync()
+
+        #expect(result.changes.isEmpty)
+        #expect(result.snapshot.lessons.isEmpty)
+        #expect(snapshots.load()?.syncedAt == afterTheLesson)
+    }
+
+    @Test("another account's timetable does not block an empty answer")
+    func emptyResponseForNewAccount() async throws {
+        try snapshots.save(Fixture.snapshot([Fixture.lesson("a", day: 17, index: 1)], account: "someone-else"))
+        let transport = FakeTransport { _, _ in .json("[]") }
+
+        let result = try await engine(transport, sessions: InMemorySessionStore(freshSession)).sync()
+
+        #expect(result.snapshot.accountID == "account")
+        #expect(result.snapshot.lessons.isEmpty)
+    }
+
+    @Test("sign-out still clears the timetable and tells the app when the keychain fails")
+    func signOutCleansUpDespiteFailure() async throws {
+        try snapshots.save(Fixture.snapshot([Fixture.lesson("a", day: 17, index: 1)]))
+        let transport = FakeTransport { _, _ in .json("[]") }
+        let engine = engine(transport, sessions: FailingClearStore())
+        let order = EventLog()
+
+        await #expect(throws: FailingClearStore.Failure.self) {
+            try await engine.signOut { await order.add("cleared") }
+        }
+
+        #expect(snapshots.load() == nil)
+        #expect(await order.events == ["cleared"])
+    }
+
     @Test("signing out clears the session and the timetable")
     func signOut() async throws {
         let sessions = InMemorySessionStore(freshSession)
@@ -213,6 +331,22 @@ struct SyncEngineTests {
         #expect(errors.allSatisfy { $0.errorDescription?.isEmpty == false })
         #expect(KretaError.http(503).errorDescription?.contains("503") == true)
     }
+}
+
+/// Records the order in which callbacks ran.
+private actor EventLog {
+    private(set) var events: [String] = []
+
+    func add(_ event: String) { events.append(event) }
+}
+
+/// A session store that cannot be cleared.
+private struct FailingClearStore: SessionStore {
+    struct Failure: Error {}
+
+    func load() -> Session? { nil }
+    func save(_ session: Session) {}
+    func clear() throws { throw Failure() }
 }
 
 /// A session store whose writes fail until told otherwise.

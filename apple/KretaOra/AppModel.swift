@@ -50,7 +50,6 @@ final class AppModel {
         do {
             let session = try await auth.completeLogin(attempt: attempt, redirect: redirect)
             try coordinator.signIn(session)
-            Notifier.clearSessionExpired()
             errorMessage = nil
             recentChanges = []
             phase = .signedIn(session.account)

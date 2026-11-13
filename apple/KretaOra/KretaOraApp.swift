@@ -6,6 +6,7 @@ struct KretaOraApp: App {
     @State private var model = AppModel()
     @Environment(\.scenePhase) private var scenePhase
 
+    @MainActor
     init() {
         UNUserNotificationCenter.current().delegate = ForegroundNotificationPresenter.shared
         WatchLink.shared.activate()

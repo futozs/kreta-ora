@@ -155,6 +155,16 @@ struct TimetableDiffTests {
         #expect(diff([maths, placeholder, cancelledExtra], [maths]).isEmpty)
     }
 
+    @Test("school-year events are not lessons, so they never notify")
+    func eventsIgnored() {
+        let dayOff = Fixture.lesson("event", day: 18, index: 1, name: "tanítás nélküli munkanap", kind: .event)
+        #expect(diff([maths], [maths, dayOff]).isEmpty)
+        #expect(diff([maths, dayOff], [maths]).isEmpty)
+        // An event sharing a slot and a name with a lesson is not that lesson.
+        let lookalike = Fixture.lesson("a-event", day: 17, index: 1, kind: .event)
+        #expect(diff([maths], [lookalike]).map(\.kind) == [.removed])
+    }
+
     @Test("changes come back in timetable order")
     func ordering() {
         let cancelledPhysics = Fixture.lesson("b", day: 17, index: 2, name: "fizika", cancelled: true)

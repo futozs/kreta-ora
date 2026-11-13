@@ -5,10 +5,10 @@ import Foundation
 final class FakeTransport: HTTPTransport, @unchecked Sendable {
     private let lock = NSLock()
     private var recorded: [URLRequest] = []
-    private let handler: @Sendable (URLRequest, Int) throws -> HTTPResponse
+    private let handler: @Sendable (URLRequest, Int) async throws -> HTTPResponse
 
     /// `handler` receives the request and how many requests came before it.
-    init(_ handler: @escaping @Sendable (URLRequest, Int) throws -> HTTPResponse) {
+    init(_ handler: @escaping @Sendable (URLRequest, Int) async throws -> HTTPResponse) {
         self.handler = handler
     }
 
@@ -19,7 +19,24 @@ final class FakeTransport: HTTPTransport, @unchecked Sendable {
             recorded.append(request)
             return recorded.count - 1
         }
-        return try handler(request, position)
+        return try await handler(request, position)
+    }
+}
+
+/// Lets a test hold a request open until it says so.
+actor Gate {
+    private var isOpen = false
+    private var waiters: [CheckedContinuation<Void, Never>] = []
+
+    func wait() async {
+        if isOpen { return }
+        await withCheckedContinuation { waiters.append($0) }
+    }
+
+    func open() {
+        isOpen = true
+        waiters.forEach { $0.resume() }
+        waiters = []
     }
 }
 

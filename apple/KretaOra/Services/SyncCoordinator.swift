@@ -20,18 +20,33 @@ final class SyncCoordinator: Sendable {
         engine = SyncEngine(sessions: sessions, snapshots: snapshots)
     }
 
+    /// True once the refresh token has been rejected. Until the next login
+    /// there is nothing a background run could do, so they stop, and the
+    /// user is told once instead of on every attempt.
+    private(set) var needsLogin: Bool {
+        get { UserDefaults.standard.bool(forKey: Self.needsLoginKey) }
+        set { UserDefaults.standard.set(newValue, forKey: Self.needsLoginKey) }
+    }
+
+    private static let needsLoginKey = "needsLogin"
+
     /// Fetches the timetable, then updates widgets, the watch, and posts a
-    /// notification for every change.
+    /// notification for every change. Publishing happens inside the engine's
+    /// queue, so a sign-out that follows cannot be overtaken by it.
     @discardableResult
     func sync() async throws -> SyncResult {
         do {
-            let result = try await engine.sync()
-            await publish(result.snapshot)
-            await Notifier.post(result.changes, now: result.snapshot.syncedAt)
+            let result = try await engine.sync { result in
+                await self.publish(result.snapshot)
+                await Notifier.post(result.changes, now: result.snapshot.syncedAt)
+            }
             logger.info("Sync finished with \(result.changes.count) change(s)")
             return result
         } catch KretaError.sessionExpired {
-            await Notifier.postSessionExpired()
+            if !needsLogin {
+                needsLogin = true
+                await Notifier.postSessionExpired()
+            }
             throw KretaError.sessionExpired
         }
     }
@@ -39,11 +54,16 @@ final class SyncCoordinator: Sendable {
     /// Stores a fresh session after login.
     func signIn(_ session: Session) throws {
         try sessions.save(session)
+        needsLogin = false
+        Notifier.clearSessionExpired()
     }
 
+    /// Widgets and the watch are cleared even if part of the clean-up fails.
     func signOut() async throws {
-        try await engine.signOut()
-        await publish(nil)
+        needsLogin = false
+        try await engine.signOut {
+            await self.publish(nil)
+        }
     }
 
     private func publish(_ snapshot: TimetableSnapshot?) async {
