@@ -15,7 +15,7 @@
 | --- | --- | --- |
 | Közös Swift mag (`KretaKit`) | `apple/KretaKit` | Kész, 102 teszt, kb. 90% sorlefedettség |
 | iOS app, widgetek, Watch app, komplikációk | `apple/` | Megírva; a kód nagy része típusellenőrizve, de **eszközön még nem futott** |
-| Közös Kotlin mag | `android/core` | Kész, 152 teszt |
+| Közös Kotlin mag | `android/core` | Kész, 160 teszt |
 | Android app és widgetek | `android/app` | Lefordul, debug APK készül belőle; valódi fiókkal még nincs végigpróbálva |
 
 Az iOS és az Android app még nem lett valódi KRÉTA fiókkal kipróbálva. Az első futtatásnál számíts apróbb javítanivalókra.
@@ -72,7 +72,7 @@ Felismert változások: elmarad, mégis megtartják, helyettesítés vagy tanár
 
 Őszintén: ez a platformon múlik.
 
-- **Android:** a háttérmunka kb. 15 percenként fut. Valódi telefonon kipróbálva: a háttérszinkron az app megnyitása nélkül észlelte az elmaradó órát és a teremcserét, és kiküldte az értesítést.
+- **Android:** tanítási napokon az első óra előtt 2 órától az utolsó óra végéig 5 percenként ellenőriz (ha a telefon mélyalvásban van, a rendszer ezt kb. 9–10 percre ritkíthatja), máskor 15 percenként. Ehhez a pontos időzítés engedélye kell, amit az app egyszer kér; enélkül a rendszer dönti el az időzítést. Valódi telefonon kipróbálva: a háttérszinkron az app megnyitása nélkül észlelte az elmaradó órát és a teremcserét, és kiküldte az értesítést.
 - **iOS:** a háttérfrissítés időzítését a rendszer dönti el a telefonhasználat alapján. Ez jellemzően napi több alkalom, de nem fix időköz, és késhet. Az app megnyitásakor mindig azonnal frissít.
 
 A gyorsabb iOS-es értesítéshez egy kis „ébresztő" szerver kell, ami néma push üzenettel indítja el ugyanezt a szinkront a telefonon, úgy, hogy a KRÉTA belépés továbbra is csak a telefonon marad. Ehhez fizetős Apple Developer fiók szükséges, ezért ez még nincs benne; a kód úgy épül fel, hogy a push ugyanazt az egy belépési pontot hívja majd.

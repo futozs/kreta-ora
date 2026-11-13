@@ -26,6 +26,7 @@ object TimetableSync {
             container.engine.sync(afterwards = { result ->
                 ChangeNotifier.post(app, result.changes, Instant.now())
                 WidgetUpdater.refreshAll(app)
+                FastSync.schedule(app, result.snapshot, Instant.now())
             })
         } catch (error: KretaException.SessionExpired) {
             // Tell the user once, then stay quiet until they sign in again.

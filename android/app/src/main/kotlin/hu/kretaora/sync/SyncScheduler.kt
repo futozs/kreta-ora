@@ -27,7 +27,9 @@ object SyncScheduler {
             .enqueueUniquePeriodicWork(WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, request)
     }
 
+    /** Stops the periodic sync and the fast school-day checks. */
     fun stop(context: Context) {
         WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
+        FastSync.cancel(context)
     }
 }

@@ -66,5 +66,9 @@
         <receiver
             android:name=".notify.LiveLessonReceiver"
             android:exported="false" />
+
+        <receiver
+            android:name=".sync.FastSyncReceiver"
+            android:exported="false" />
     </application>
 </manifest>
