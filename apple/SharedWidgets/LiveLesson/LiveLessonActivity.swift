@@ -14,37 +14,64 @@ struct LiveLessonActivityWidget: Widget {
                 .activityBackgroundTint(Palette.background)
                 .activitySystemActionForegroundColor(Palette.text)
         } dynamicIsland: { context in
-            let state = context.state
-            let focus = state.focus(at: Date())
+            let focus = context.state.focus(at: Date())
             return DynamicIsland {
                 DynamicIslandExpandedRegion(.leading) {
-                    if let focus { SubjectDot(segment: focus.segment, size: 12).padding(.leading, 6).padding(.top, 6) }
+                    if let focus {
+                        SubjectBadge(segment: focus.segment, size: 52, showsNumber: true)
+                            .padding(.leading, 4)
+                    }
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    if let focus { LiveCountdown(focus: focus).kretaFont(KretaType.time.size(22).weight(800)) }
+                    if let focus {
+                        VStack(alignment: .trailing, spacing: 0) {
+                            LiveCountdown(focus: focus)
+                                .kretaFont(KretaType.countdown.size(30), scalesWithDynamicType: false)
+                                .foregroundStyle(Palette.text)
+                            Text(focus.isRunning ? L10n.left : L10n.widgetStartsIn)
+                                .kretaFont(KretaType.small.size(12), scalesWithDynamicType: false)
+                                .foregroundStyle(Palette.textDim)
+                        }
+                        .padding(.trailing, 4)
+                    }
                 }
                 DynamicIslandExpandedRegion(.center) {
-                    if let focus { LiveTitle(focus: focus).lineLimit(1) }
+                    if let focus {
+                        VStack(alignment: .leading, spacing: 2) {
+                            LiveTitle(focus: focus)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.8)
+                            Text(focus.segment.detail)
+                                .kretaFont(KretaType.small.size(13), scalesWithDynamicType: false)
+                                .foregroundStyle(Palette.textDim)
+                                .lineLimit(1)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    LiveDayBar(state: state).padding(.top, 6)
+                    LiveDayBar(state: context.state)
+                        .padding(.horizontal, 4)
+                        .padding(.top, 10)
                 }
             } compactLeading: {
-                if let focus { SubjectDot(segment: focus.segment, size: 10) }
+                if let focus {
+                    SubjectIcon(segment: focus.segment)
+                        .font(.system(size: 15, weight: .bold))
+                        .padding(.leading, 2)
+                }
             } compactTrailing: {
                 if let focus {
+                    // A fixed width keeps the island from resizing as the digits change.
                     LiveCountdown(focus: focus)
-                        .kretaFont(KretaType.time.size(14).weight(800), scalesWithDynamicType: false)
-                        .frame(maxWidth: 48)
+                        .kretaFont(KretaType.time.size(15).weight(800), scalesWithDynamicType: false)
+                        .foregroundStyle(focus.segment.swatch.map(Subjects.color) ?? Palette.text)
+                        .frame(width: countdownWidth(for: focus), alignment: .trailing)
                 }
             } minimal: {
                 if let focus {
-                    ProgressView(
-                        timerInterval: focus.isRunning ? focus.segment.start...focus.segment.end : Date()...focus.segment.start,
-                        countsDown: !focus.isRunning
-                    ) { EmptyView() } currentValueLabel: { EmptyView() }
-                    .progressViewStyle(.circular)
-                    .tint(focus.segment.swatch.map(Subjects.color) ?? Palette.text)
+                    SubjectIcon(segment: focus.segment)
+                        .font(.system(size: 14, weight: .bold))
                 }
             }
             .keylineTint(focus?.segment.swatch.map(Subjects.color))
@@ -65,6 +92,7 @@ struct LiveLessonLockScreen: View {
         } else if let focus = state.focus(at: now) {
             VStack(alignment: .leading, spacing: 12) {
                 HStack(alignment: .top, spacing: 12) {
+                    SubjectBadge(segment: focus.segment, size: 44, showsNumber: false)
                     VStack(alignment: .leading, spacing: 2) {
                         LiveTitle(focus: focus)
                             .lineLimit(1)
@@ -131,11 +159,15 @@ struct LiveLessonSmall: View {
 
     private func block(_ focus: (segment: LiveLessonAttributes.Segment, isRunning: Bool)) -> some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(focus.isRunning ? focus.segment.title : L10n.liveNextTitle(focus.segment.title))
-                .kretaFont(KretaType.blockTitle.size(16), scalesWithDynamicType: false)
-                .foregroundStyle(Palette.ink)
-                .lineLimit(1)
-                .minimumScaleFactor(0.8)
+            HStack(spacing: 5) {
+                Image(systemName: SubjectSymbol.name(for: focus.segment.name))
+                    .font(.system(size: 13, weight: .bold))
+                Text(focus.isRunning ? focus.segment.title : L10n.liveNextTitle(focus.segment.title))
+                    .kretaFont(KretaType.blockTitle.size(16), scalesWithDynamicType: false)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+            .foregroundStyle(Palette.ink)
             Text(focus.segment.detail)
                 .kretaFont(KretaType.small.size(11), scalesWithDynamicType: false)
                 .foregroundStyle(Palette.inkMuted)
@@ -193,15 +225,45 @@ private struct LiveCountdown: View {
     }
 }
 
-private struct SubjectDot: View {
+/// The subject's sign in its colour; an outline sign when the lesson is cancelled.
+private struct SubjectIcon: View {
     let segment: LiveLessonAttributes.Segment
-    let size: CGFloat
 
     var body: some View {
-        Circle()
-            .fill(segment.swatch.map(Subjects.color) ?? Palette.textFaint)
-            .frame(width: size, height: size)
+        Image(systemName: SubjectSymbol.name(for: segment.name))
+            .foregroundStyle(segment.swatch.map(Subjects.color) ?? Palette.textFaint)
     }
+}
+
+/// A rounded square in the subject's colour with its sign, and the lesson
+/// number under it where there is room.
+private struct SubjectBadge: View {
+    let segment: LiveLessonAttributes.Segment
+    let size: CGFloat
+    let showsNumber: Bool
+
+    var body: some View {
+        VStack(spacing: 2) {
+            Image(systemName: SubjectSymbol.name(for: segment.name))
+                .font(.system(size: size * 0.4, weight: .bold))
+            if showsNumber, let number = segment.number {
+                Text(L10n.lessonNumber(number))
+                    .kretaFont(KretaType.number.size(size * 0.26), scalesWithDynamicType: false)
+            }
+        }
+        .foregroundStyle(Palette.ink)
+        .frame(width: size, height: size)
+        .background(
+            segment.swatch.map(Subjects.color) ?? Palette.textFaint,
+            in: RoundedRectangle(cornerRadius: size * 0.3, style: .continuous)
+        )
+    }
+}
+
+/// Room for "23:57" or, more than an hour ahead, "1:05:09".
+private func countdownWidth(for focus: (segment: LiveLessonAttributes.Segment, isRunning: Bool)) -> CGFloat {
+    let target = focus.isRunning ? focus.segment.end : focus.segment.start
+    return target.timeIntervalSinceNow >= 3600 ? 60 : 44
 }
 
 /// The day from the first bell to the last: each lesson a segment as long as
