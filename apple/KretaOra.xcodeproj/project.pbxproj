@@ -20,6 +20,7 @@
 		14EFF80073C9DD2E6E8C0B93 /* DayStartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B05A5546B350210325CE41 /* DayStartWidget.swift */; };
 		19840C989767A296E5EE35B8 /* DayStartViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDC88D166674E25F5ADF6B0 /* DayStartViews.swift */; };
 		1C45AA89F3FA7B22ED4A15D6 /* MinuteSteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFB46BE6DB5DADD840C0ACD /* MinuteSteps.swift */; };
+		1F775022AB41EFF7146AC47E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D57A43860CA6B93D5530F4B /* Assets.xcassets */; };
 		227F633FDC331E3A12E9E0CD /* TimetableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25B52CC52069CD7DE0977396 /* TimetableHeader.swift */; };
 		2298E3691E3A88685D0B05B6 /* MinuteSteps.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFB46BE6DB5DADD840C0ACD /* MinuteSteps.swift */; };
 		2406F6E4AEB47ADEC7B313F1 /* LiveLessonActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B773B8591F1DC978C2B8FD /* LiveLessonActivity.swift */; };
@@ -70,6 +71,7 @@
 		8748BB3DA052FA1D2197E4EA /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 327F066E493F0B63316253DA /* AppEnvironment.swift */; };
 		89A15E53D3601D18FB4B0D86 /* HankenGrotesk-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 96EA1561B0B3CE3F02282488 /* HankenGrotesk-OFL.txt */; };
 		8B26F45DB3909BF90C15B78C /* MessageToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EC552DE16C0AE4D8C94DCFB /* MessageToast.swift */; };
+		8B99E2BCF2378EE28C21B3F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2163E1730C05426500CE950E /* Assets.xcassets */; };
 		8C0391D61FB1F31CE71A077D /* LiveLessonActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71B773B8591F1DC978C2B8FD /* LiveLessonActivity.swift */; };
 		8C2786084BE51C8B4DAAC77C /* LivePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA73BBAD39534B471180FE /* LivePreferences.swift */; };
 		8E9F85A1388CB3D10BC90715 /* LiveLessonAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF350A883607307F9A888C81 /* LiveLessonAttributes.swift */; };
@@ -205,6 +207,7 @@
 		07F9D6098F9BAB7AD570B80B /* LoginWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginWebView.swift; sourceTree = "<group>"; };
 		0D318A5F2F9AE5D46A3F36D2 /* NextLessonWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextLessonWidget.swift; sourceTree = "<group>"; };
 		1754C2406DA4B28943AECF6B /* KretaOraWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = KretaOraWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2163E1730C05426500CE950E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21D1C4AF47D6CD6BF52DF3A0 /* DayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPage.swift; sourceTree = "<group>"; };
 		22CAC4DE9AE98B601AEBAE45 /* KretaOra.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KretaOra.entitlements; sourceTree = "<group>"; };
 		25B52CC52069CD7DE0977396 /* TimetableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableHeader.swift; sourceTree = "<group>"; };
@@ -232,6 +235,7 @@
 		5700165CFC33D8FA85B98715 /* KretaOraWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KretaOraWatchApp.swift; sourceTree = "<group>"; };
 		58BA434157612CF57369B718 /* KretaOraWatchWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KretaOraWatchWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA500FD00B38344073C41EA /* BricolageGrotesque.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BricolageGrotesque.ttf; sourceTree = "<group>"; };
+		5D57A43860CA6B93D5530F4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F19B39D167729E4ACC1B9A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65038B0EB4589ECD571D5885 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		699B0274C1EB96D82F726126 /* WatchLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLink.swift; sourceTree = "<group>"; };
@@ -457,6 +461,7 @@
 			isa = PBXGroup;
 			children = (
 				53AF1C61E68790D46E8C330C /* AppModel.swift */,
+				5D57A43860CA6B93D5530F4B /* Assets.xcassets */,
 				B94B6BE1C736D3A1DC891742 /* Info.plist */,
 				22CAC4DE9AE98B601AEBAE45 /* KretaOra.entitlements */,
 				321F28498D9318B15A91CEE5 /* KretaOraApp.swift */,
@@ -524,6 +529,7 @@
 		F58E6C1173DE8AD9F0FA6BBD /* KretaOraWatch */ = {
 			isa = PBXGroup;
 			children = (
+				2163E1730C05426500CE950E /* Assets.xcassets */,
 				5F19B39D167729E4ACC1B9A2 /* Info.plist */,
 				DF60D2A208C46C4CF92CA9E9 /* KretaOraWatch.entitlements */,
 				5700165CFC33D8FA85B98715 /* KretaOraWatchApp.swift */,
@@ -710,6 +716,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F775022AB41EFF7146AC47E /* Assets.xcassets in Resources */,
 				EE4978F70C39964AF97DEC06 /* BricolageGrotesque-OFL.txt in Resources */,
 				91C0D5B31FACA531013C0979 /* BricolageGrotesque.ttf in Resources */,
 				73EED12631717CA65E8E8987 /* HankenGrotesk-OFL.txt in Resources */,
@@ -732,6 +739,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8B99E2BCF2378EE28C21B3F8 /* Assets.xcassets in Resources */,
 				000B116565060131FF73E54E /* BricolageGrotesque-OFL.txt in Resources */,
 				29EB3935D554F09D5F2607BB /* BricolageGrotesque.ttf in Resources */,
 				DE6E189BA5E65FAA94823EF8 /* HankenGrotesk-OFL.txt in Resources */,
