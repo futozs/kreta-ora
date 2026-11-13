@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import hu.kretaora.notify.LiveLesson
 import hu.kretaora.widget.ExactAlarmPrompt
 import hu.kretaora.widget.WidgetUpdater
 import androidx.compose.ui.res.stringResource
@@ -85,6 +86,7 @@ fun TimetableScreen(
     onSignOut: () -> Unit,
     onSignInAgain: () -> Unit,
     onDismissMessage: () -> Unit,
+    onClockSurfacesChanged: () -> Unit,
 ) {
     val palette = Kreta.palette
     val now by rememberNow(Duration.ofSeconds(15))
@@ -96,9 +98,45 @@ fun TimetableScreen(
     var showsAccount by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
     var asksForExactAlarms by remember { mutableStateOf(false) }
+    var offersLiveLesson by remember { mutableStateOf(false) }
     LifecycleResumeEffect(Unit) {
         asksForExactAlarms = ExactAlarmPrompt.isDue(context)
+        offersLiveLesson = LiveLesson.isOfferDue(context)
         onPauseOrDispose { }
+    }
+    val notice: (@Composable () -> Unit)? = when {
+        asksForExactAlarms -> {
+            {
+                OfferNote(
+                    body = stringResource(R.string.exact_alarm_body),
+                    allow = stringResource(R.string.exact_alarm_allow),
+                    onAllow = { context.startActivity(WidgetUpdater.exactAlarmSettings(context)) },
+                    onLater = {
+                        ExactAlarmPrompt.dismiss(context)
+                        asksForExactAlarms = false
+                    },
+                )
+            }
+        }
+        offersLiveLesson -> {
+            {
+                OfferNote(
+                    body = stringResource(R.string.live_offer_body),
+                    allow = stringResource(R.string.live_offer_allow),
+                    onAllow = {
+                        LiveLesson.setEnabled(context, true)
+                        offersLiveLesson = false
+                        asksForExactAlarms = ExactAlarmPrompt.isDue(context)
+                        onClockSurfacesChanged()
+                    },
+                    onLater = {
+                        LiveLesson.dismissOffer(context)
+                        offersLiveLesson = false
+                    },
+                )
+            }
+        }
+        else -> null
     }
 
     // A new window of days (the first sync, or a week rolling over) starts the pager afresh.
@@ -147,19 +185,7 @@ fun TimetableScreen(
                         needsSignIn = state.needsSignIn,
                         onRefresh = onRefresh,
                         onSignInAgain = onSignInAgain,
-                        notice = if (asksForExactAlarms) {
-                            {
-                                ExactAlarmNote(
-                                    onAllow = { context.startActivity(WidgetUpdater.exactAlarmSettings(context)) },
-                                    onLater = {
-                                        ExactAlarmPrompt.dismiss(context)
-                                        asksForExactAlarms = false
-                                    },
-                                )
-                            }
-                        } else {
-                            null
-                        },
+                        notice = notice,
                     )
                 }
             }
@@ -192,6 +218,7 @@ fun TimetableScreen(
 
     if (showsAccount) {
         AccountSheet(
+            onClockSurfacesChanged = onClockSurfacesChanged,
             account = state.account,
             syncedAt = state.snapshot?.syncedAt,
             now = now,

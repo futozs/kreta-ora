@@ -64,6 +64,14 @@
     <string name="widget_starts_in">múlva kezdődik</string>
     <string name="widget_today">ma</string>
     <string name="widget_tomorrow">holnap</string>
+    <string name="live_channel_name">Élő óra</string>
+    <string name="live_channel_description">Tanítási időben a futó vagy a következő óra, visszaszámlálással.</string>
+    <string name="live_next_title">Következik: %1$s</string>
+    <string name="live_hide_today">Elrejtés mára</string>
+    <string name="live_toggle_title">Élő óra a zárolási képernyőn</string>
+    <string name="live_toggle_body">Tanítási időben egy értesítés mutatja a futó órát és a hátralévő időt, a nap óráival egy színes sávban.</string>
+    <string name="live_offer_body">Kérsz élő visszaszámlálást a zárolási képernyőre és az állapotsorba tanítási időben? Az első óra előtt egy órával jelenik meg, az utolsó után eltűnik.</string>
+    <string name="live_offer_allow">Bekapcsolás</string>
     <string name="exact_alarm_body">A widget visszaszámlálása csak akkor vált pontosan csengetéskor, ha engedélyezed az alkalmazásnak a pontos időzítést.</string>
     <string name="exact_alarm_allow">Engedélyezés</string>
     <string name="exact_alarm_later">Most nem</string>

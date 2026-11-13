@@ -12,13 +12,15 @@ import hu.kretaora.container
 import hu.kretaora.core.model.KretaDate
 import hu.kretaora.core.timetable.Schedule
 import hu.kretaora.core.timetable.TimetableSnapshot
+import hu.kretaora.notify.LiveLesson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.Instant
 
 /**
- * Redraws the widgets and arranges the next redraw.
+ * Redraws the widgets and the school-day notification, and arranges the
+ * next redraw.
  *
  * Widgets render from the stored snapshot only. The countdown ticks on its
  * own; a redraw is needed only when the picture changes: at every bell, an
@@ -39,7 +41,8 @@ object WidgetUpdater {
         val app = context.applicationContext
         val next = widgetIds(app, NextLessonWidgetReceiver::class.java)
         val dayStart = widgetIds(app, DayStartWidgetReceiver::class.java)
-        if (next.isEmpty() && dayStart.isEmpty()) {
+        if (next.isEmpty() && dayStart.isEmpty() && !LiveLesson.isEnabled(app)) {
+            LiveLesson.update(app, snapshot = null, now = Instant.now())
             scheduleNextRefresh(app, snapshot = null, now = Instant.now())
             return
         }
@@ -48,12 +51,15 @@ object WidgetUpdater {
         val manager = AppWidgetManager.getInstance(app)
         NextLessonWidget.render(app, manager, next, snapshot, now)
         DayStartWidget.render(app, manager, dayStart, snapshot, now)
+        LiveLesson.update(app, snapshot, now)
         scheduleNextRefresh(app, snapshot, now)
     }
 
-    fun hasWidgets(context: Context): Boolean =
+    /** Something on screen follows the clock: a widget, or the school-day notification. */
+    fun hasClockSurfaces(context: Context): Boolean =
         widgetIds(context, NextLessonWidgetReceiver::class.java).isNotEmpty() ||
-            widgetIds(context, DayStartWidgetReceiver::class.java).isNotEmpty()
+            widgetIds(context, DayStartWidgetReceiver::class.java).isNotEmpty() ||
+            LiveLesson.isEnabled(context)
 
     /** True when redraws can land exactly on the bell. */
     fun canRedrawOnTime(context: Context): Boolean =
@@ -98,7 +104,10 @@ object WidgetUpdater {
         val lessons = schedule.activeLessons
         val bells = lessons.flatMap { listOf(it.start.minus(NextLessonWidget.COUNTDOWN_WINDOW), it.start, it.end) }
         val midnights = (1..2).map { KretaDate.addingDays(it, KretaDate.startOfDay(now)) }
-        val progress = listOfNotNull(schedule.currentLesson(now)?.let { now.plus(PROGRESS_STEP) })
+        // Every few minutes while school is on, so the progress bars keep moving.
+        val today = lessons.filter { KretaDate.isSameDay(it.start, now) }
+        val isSchoolTime = today.isNotEmpty() && now >= today.first().start && now < today.last().end
+        val progress = listOfNotNull(now.plus(PROGRESS_STEP).takeIf { isSchoolTime })
         return (bells + midnights + progress).filter { it > now }.minOrNull()
     }
 }

@@ -78,6 +78,7 @@ private fun AppRoot(viewModel: AppViewModel) {
             onSignOut = viewModel::signOut,
             onSignInAgain = viewModel::signInAgain,
             onDismissMessage = viewModel::dismissMessage,
+            onClockSurfacesChanged = viewModel::refreshWidgets,
         )
     }
 }

@@ -72,10 +72,14 @@ Felismert változások: elmarad, mégis megtartják, helyettesítés vagy tanár
 
 Őszintén: ez a platformon múlik.
 
-- **Android:** a háttérmunka kb. 15 percenként fut.
+- **Android:** a háttérmunka kb. 15 percenként fut. Valódi telefonon kipróbálva: a háttérszinkron az app megnyitása nélkül észlelte az elmaradó órát és a teremcserét, és kiküldte az értesítést.
 - **iOS:** a háttérfrissítés időzítését a rendszer dönti el a telefonhasználat alapján. Ez jellemzően napi több alkalom, de nem fix időköz, és késhet. Az app megnyitásakor mindig azonnal frissít.
 
 A gyorsabb iOS-es értesítéshez egy kis „ébresztő" szerver kell, ami néma push üzenettel indítja el ugyanezt a szinkront a telefonon, úgy, hogy a KRÉTA belépés továbbra is csak a telefonon marad. Ehhez fizetős Apple Developer fiók szükséges, ezért ez még nincs benne; a kód úgy épül fel, hogy a push ugyanazt az egy belépési pontot hívja majd.
+
+### Élő óra (Android)
+
+Bekapcsolható értesítés, ami tanítási időben a futó órát és a hátralévő időt mutatja, szünetben a következő órát és a kezdésig hátralévő időt. A sávjában a nap órái a tantárgyak színeiben látszanak, és kitöltődik, ahogy halad a nap. Android 16-on élő értesítésként (Live Update) a zárolási képernyőn és az állapotsorban is látszik. Az első óra előtt egy órával jelenik meg, az utolsó után eltűnik; elhúzva vagy az „Elrejtés mára” gombbal aznapra eltűnik.
 
 ### Widgetek
 

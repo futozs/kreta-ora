@@ -10,6 +10,7 @@ import hu.kretaora.core.timetable.SnapshotStore
 import hu.kretaora.data.KeystoreSessionStore
 import hu.kretaora.data.SessionState
 import hu.kretaora.notify.ChangeNotifier
+import hu.kretaora.notify.LiveLesson
 import java.io.File
 
 /** The app's few long-lived objects, created once and shared by every entry point. */
@@ -28,6 +29,7 @@ class KretaOraApp : Application() {
     override fun onCreate() {
         super.onCreate()
         ChangeNotifier.createChannel(this)
+        LiveLesson.createChannel(this)
     }
 }
 

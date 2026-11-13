@@ -200,9 +200,9 @@ private fun SignInAgainNote(onSignInAgain: () -> Unit) {
     }
 }
 
-/** Asks for exact alarms, so the widget's countdown switches right at the bell. */
+/** A one-time suggestion at the top of the day: a sentence, a yes and a not now. */
 @Composable
-fun ExactAlarmNote(onAllow: () -> Unit, onLater: () -> Unit) {
+fun OfferNote(body: String, allow: String, onAllow: () -> Unit, onLater: () -> Unit) {
     val palette = Kreta.palette
     Column(
         modifier = Modifier
@@ -213,10 +213,10 @@ fun ExactAlarmNote(onAllow: () -> Unit, onLater: () -> Unit) {
             .padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        Text(text = stringResource(R.string.exact_alarm_body), style = KretaType.body, color = palette.text)
+        Text(text = body, style = KretaType.body, color = palette.text)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(
-                text = stringResource(R.string.exact_alarm_allow),
+                text = allow,
                 style = KretaType.button,
                 color = Ink,
                 modifier = Modifier
