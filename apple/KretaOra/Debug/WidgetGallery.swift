@@ -44,13 +44,16 @@ struct WidgetGallery: View {
                 }
                 widget(.systemMedium, size: Self.medium) { NextLessonHomeView(entry: entry, family: .systemMedium) }
                     background: { NextLessonHomeView.background(for: entry, family: .systemMedium) }
-                widget(.systemMedium, size: Self.medium) { NextLessonHomeView(entry: soonEntry, family: .systemMedium) }
-                    background: { NextLessonHomeView.background(for: soonEntry, family: .systemMedium) }
+                widget(.systemLarge, size: Self.large) { NextLessonHomeView(entry: entry, family: .systemLarge) }
+                    background: { NextLessonHomeView.background(for: entry, family: .systemLarge) }
     }
 
     @ViewBuilder private var secondHalf: some View {
-                widget(.systemLarge, size: Self.large) { NextLessonHomeView(entry: entry, family: .systemLarge) }
-                    background: { NextLessonHomeView.background(for: entry, family: .systemLarge) }
+                // The countdown ticks on the real clock, so this state only reads right before the first lesson.
+                if soonEntry.date > Date() {
+                    widget(.systemMedium, size: Self.medium) { NextLessonHomeView(entry: soonEntry, family: .systemMedium) }
+                        background: { NextLessonHomeView.background(for: soonEntry, family: .systemMedium) }
+                }
                 widget(.systemMedium, size: Self.medium, margins: 16) { DayStartHomeView(entry: entry, family: .systemMedium) }
                     background: { Palette.surface }
                 liveActivity
