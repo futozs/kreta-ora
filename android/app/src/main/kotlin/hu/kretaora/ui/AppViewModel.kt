@@ -167,6 +167,10 @@ class AppViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun refreshWidgets() {
+        viewModelScope.launch { WidgetUpdater.refreshAll(getApplication()) }
+    }
+
     fun dismissMessage() {
         mutableState.update { it.copy(message = null) }
     }

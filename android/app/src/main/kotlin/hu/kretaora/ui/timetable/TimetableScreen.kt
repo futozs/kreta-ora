@@ -37,6 +37,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LifecycleResumeEffect
+import hu.kretaora.widget.ExactAlarmPrompt
+import hu.kretaora.widget.WidgetUpdater
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -90,6 +94,12 @@ fun TimetableScreen(
         state.snapshot?.pagerDays()?.takeIf { it.isNotEmpty() } ?: schoolWeekOf(today)
     }
     var showsAccount by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
+    var asksForExactAlarms by remember { mutableStateOf(false) }
+    LifecycleResumeEffect(Unit) {
+        asksForExactAlarms = ExactAlarmPrompt.isDue(context)
+        onPauseOrDispose { }
+    }
 
     // A new window of days (the first sync, or a week rolling over) starts the pager afresh.
     key(days.first(), days.size) {
@@ -137,6 +147,19 @@ fun TimetableScreen(
                         needsSignIn = state.needsSignIn,
                         onRefresh = onRefresh,
                         onSignInAgain = onSignInAgain,
+                        notice = if (asksForExactAlarms) {
+                            {
+                                ExactAlarmNote(
+                                    onAllow = { context.startActivity(WidgetUpdater.exactAlarmSettings(context)) },
+                                    onLater = {
+                                        ExactAlarmPrompt.dismiss(context)
+                                        asksForExactAlarms = false
+                                    },
+                                )
+                            }
+                        } else {
+                            null
+                        },
                     )
                 }
             }

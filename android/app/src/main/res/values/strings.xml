@@ -61,6 +61,10 @@
     <string name="widget_day_start_name">Mikor kezdünk?</string>
     <string name="widget_day_start_description">A következő tanítási nap első órája és a nap hossza.</string>
     <string name="widget_signed_out">Jelentkezz be az alkalmazásban.</string>
-    <string name="widget_lesson_number">%1$d. óra</string>
-    <string name="widget_later">Utána</string>
+    <string name="widget_starts_in">múlva kezdődik</string>
+    <string name="widget_today">ma</string>
+    <string name="widget_tomorrow">holnap</string>
+    <string name="exact_alarm_body">A widget visszaszámlálása csak akkor vált pontosan csengetéskor, ha engedélyezed az alkalmazásnak a pontos időzítést.</string>
+    <string name="exact_alarm_allow">Engedélyezés</string>
+    <string name="exact_alarm_later">Most nem</string>
 </resources>

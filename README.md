@@ -85,7 +85,9 @@ A gyorsabb iOS-es értesítéshez egy kis „ébresztő" szerver kell, ami néma
 | Holnapi kezdés („Mikor kezdünk?") | kis, zárolási képernyő | számlap, Smart Stack | kis, széles |
 | Napi órarend | közepes, nagy | – | – |
 
-A widgetek nem használnak hálózatot: a legutóbb letöltött órarendből rajzolnak, és előre beütemezik magukat az órák elejére és végére. Apple eszközökön élő visszaszámlálás látszik. Androidon a rendszer a pontatlan ébresztőket néhány perccel később is kézbesítheti, ezért ott a widget óraidőket mutat, nem visszaszámlálást.
+A widgetek nem használnak hálózatot: a legutóbb letöltött órarendből rajzolnak. A futó óra visszaszámlálását maga a rendszer ketyegteti másodpercenként, az appnak ehhez nem kell futnia.
+
+Androidon a „Következő óra” widget a méretéhez igazodik: 4×2-n a futó óra mellett jobbra a következő három óra áll, magasabb méretben alatta, kis színes blokkokban. Hogy a számláló pontosan csengetéskor váltson, az app egyszer engedélyt kér a pontos időzítéshez; enélkül a váltás néhány percet késhet. Az Android-widgetek nem tudják betölteni az app saját betűtípusát, ezért ott a telefon betűje látszik, vastagítva.
 
 ## Fejlesztés
 

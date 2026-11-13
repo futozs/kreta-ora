@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -75,6 +76,7 @@ fun DayPage(
     onRefresh: () -> Unit,
     onSignInAgain: () -> Unit,
     modifier: Modifier = Modifier,
+    notice: (@Composable () -> Unit)? = null,
 ) {
     val rows = remember(schedule, day, now) { schedule?.let { rowsOf(it, day, now) } }
     val events = remember(schedule, day) { schedule?.eventsOn(day).orEmpty() }
@@ -87,6 +89,9 @@ fun DayPage(
         ) {
             if (needsSignIn) {
                 item(key = "sign-in") { SignInAgainNote(onSignInAgain) }
+            }
+            if (notice != null) {
+                item(key = "notice") { notice() }
             }
             items(events, key = { "event-${it.id}" }) { EventNote(it) }
             when {
@@ -192,6 +197,44 @@ private fun SignInAgainNote(onSignInAgain: () -> Unit) {
                 .pressable(onClick = onSignInAgain)
                 .padding(horizontal = 20.dp, vertical = 12.dp),
         )
+    }
+}
+
+/** Asks for exact alarms, so the widget's countdown switches right at the bell. */
+@Composable
+fun ExactAlarmNote(onAllow: () -> Unit, onLater: () -> Unit) {
+    val palette = Kreta.palette
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 6.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .background(palette.surface)
+            .padding(18.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp),
+    ) {
+        Text(text = stringResource(R.string.exact_alarm_body), style = KretaType.body, color = palette.text)
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                text = stringResource(R.string.exact_alarm_allow),
+                style = KretaType.button,
+                color = Ink,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(palette.accent)
+                    .pressable(onClick = onAllow)
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
+            )
+            Text(
+                text = stringResource(R.string.exact_alarm_later),
+                style = KretaType.button,
+                color = palette.textDim,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .pressable(onClick = onLater)
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+            )
+        }
     }
 }
 
