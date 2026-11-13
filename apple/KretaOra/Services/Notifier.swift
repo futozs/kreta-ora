@@ -49,8 +49,8 @@ enum Notifier {
     static func postSessionExpired() async {
         await add(
             id: sessionExpiredID,
-            title: "Jelentkezz be újra",
-            body: "A KRÉTA munkamenet lejárt, addig nem tudom figyelni az órarendváltozásokat."
+            title: L10n.notificationSessionTitle,
+            body: L10n.notificationSessionBody
         )
     }
 
@@ -75,7 +75,7 @@ enum Notifier {
 }
 
 /// Shows banners even while the app is open.
-final class ForegroundNotificationPresenter: NSObject, UNUserNotificationCenterDelegate {
+final class ForegroundNotificationPresenter: NSObject, UNUserNotificationCenterDelegate, Sendable {
     static let shared = ForegroundNotificationPresenter()
 
     func userNotificationCenter(

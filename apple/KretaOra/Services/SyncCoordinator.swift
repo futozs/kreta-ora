@@ -69,5 +69,6 @@ final class SyncCoordinator: Sendable {
     private func publish(_ snapshot: TimetableSnapshot?) async {
         WidgetCenter.shared.reloadAllTimelines()
         await WatchLink.shared.send(snapshot)
+        LiveLessonController.shared.update(snapshot: snapshot)
     }
 }

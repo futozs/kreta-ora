@@ -17,93 +17,141 @@ final class AppModel {
     private(set) var phase: Phase = .loading
     private(set) var snapshot: TimetableSnapshot?
     private(set) var isSyncing = false
-    /// A message for the user when the last action failed.
-    private(set) var errorMessage: String?
-    /// Changes found since the app was opened, newest sync first.
-    private(set) var recentChanges: [TimetableChange] = []
+    /// The stored session no longer works; the timetable shown is the last one saved.
+    private(set) var needsSignIn = false
+    /// Set while KRÉTA's login page is open.
+    var loginAttempt: LoginAttempt?
+    private(set) var isSigningIn = false
+    /// A short notice for the user; the toast dismisses it.
+    private(set) var message: String?
 
     private let coordinator = SyncCoordinator.shared
     private let auth = AuthService()
     private let logger = Logger(subsystem: "hu.kretaora", category: "model")
+    private var isDemo = false
 
-    var schedule: Schedule? { snapshot?.schedule }
+    var account: Account? {
+        if case .signedIn(let account) = phase { return account }
+        return nil
+    }
 
     /// Reads the stored session and the cached timetable, then refreshes.
     func start() async {
         guard phase == .loading else { return }
+        if startDemoIfAsked() { return }
         do {
-            if let session = try coordinator.sessions.load() {
-                snapshot = coordinator.snapshots.load()
-                phase = .signedIn(session.account)
-                await refresh()
-            } else {
+            guard let session = try coordinator.sessions.load() else {
                 phase = .signedOut
+                return
+            }
+            let stored = coordinator.snapshots.load()
+            snapshot = stored?.accountID == session.account.id ? stored : nil
+            phase = .signedIn(session.account)
+            if coordinator.needsLogin {
+                needsSignIn = true
+                message = L10n.errorSessionExpired
+            } else {
+                await refresh()
             }
         } catch {
             logger.error("Could not read the stored session: \(error.localizedDescription)")
             phase = .signedOut
         }
+        LiveLessonController.shared.update(snapshot: snapshot)
     }
 
-    /// Called by the login web view once KRÉTA redirects back.
-    func completeLogin(attempt: LoginAttempt, redirect: URL) async {
+    /// Opens KRÉTA's login page. The school is picked there, so nothing is typed here.
+    func startLogin(institution: String? = nil) {
+        do {
+            loginAttempt = try LoginAttempt(institution: institution)
+            message = nil
+        } catch {
+            message = (error as? KretaError)?.errorDescription ?? L10n.errorUnexpected
+        }
+    }
+
+    /// Starts a new login for the same school after the session expired.
+    func signInAgain() {
+        startLogin(institution: account?.institutionCode)
+    }
+
+    /// Called with the intercepted OAuth redirect.
+    func completeLogin(redirect: URL) async {
+        guard let attempt = loginAttempt else { return }
+        loginAttempt = nil
+        isSigningIn = true
+        defer { isSigningIn = false }
         do {
             let session = try await auth.completeLogin(attempt: attempt, redirect: redirect)
             try coordinator.signIn(session)
-            errorMessage = nil
-            recentChanges = []
+            if snapshot?.accountID != session.account.id { snapshot = nil }
+            needsSignIn = false
+            message = nil
             phase = .signedIn(session.account)
             await Notifier.requestAuthorization()
             await refresh()
         } catch {
-            errorMessage = message(for: error)
+            message = text(for: error)
         }
     }
 
+    /// Syncs unless a sync is already running or the session needs a new login.
     func refresh() async {
-        guard case .signedIn = phase, !isSyncing else { return }
+        guard account != nil, !isSyncing, !needsSignIn, !isDemo else { return }
         isSyncing = true
         defer { isSyncing = false }
         do {
             let result = try await coordinator.sync()
             snapshot = result.snapshot
-            recentChanges = (result.changes + recentChanges).uniqued()
-            errorMessage = nil
+            message = nil
         } catch KretaError.sessionExpired {
             // The cached timetable stays visible; only the session is gone.
-            errorMessage = KretaError.sessionExpired.errorDescription
+            needsSignIn = true
+            message = L10n.errorSessionExpired
+        } catch KretaError.notLoggedIn {
+            snapshot = nil
+            phase = .signedOut
         } catch {
-            errorMessage = message(for: error)
+            message = text(for: error)
         }
+        LiveLessonController.shared.update(snapshot: snapshot)
     }
 
     func signOut() async {
-        do {
-            try await coordinator.signOut()
-        } catch {
-            logger.error("Sign out did not clean up completely: \(error.localizedDescription)")
+        if !isDemo {
+            do {
+                try await coordinator.signOut()
+            } catch {
+                logger.error("Sign out did not clean up completely: \(error.localizedDescription)")
+            }
         }
         snapshot = nil
-        recentChanges = []
-        errorMessage = nil
+        needsSignIn = false
+        message = nil
         phase = .signedOut
+        LiveLessonController.shared.update(snapshot: nil)
     }
 
-    func dismissError() {
-        errorMessage = nil
+    func dismissMessage() {
+        message = nil
     }
 
-    private func message(for error: Error) -> String {
+    private func text(for error: Error) -> String {
         if let kreta = error as? KretaError, let text = kreta.errorDescription { return text }
-        if error is URLError { return "Nincs kapcsolat a KRÉTA szerverrel. Az utoljára letöltött órarendet látod." }
-        return "Váratlan hiba történt. Próbáld újra."
+        if error is URLError { return L10n.errorOffline }
+        return L10n.errorUnexpected
     }
-}
 
-private extension Array where Element == TimetableChange {
-    /// Keeps the first occurrence of each change.
-    func uniqued() -> [TimetableChange] {
-        var seen = Set<String>()
-        return filter { seen.insert("\($0.id)@\($0.lesson.start.timeIntervalSince1970)").inserted }
+    /// Debug builds can show every screen without an account.
+    private func startDemoIfAsked() -> Bool {
+        if LaunchOptions.showsLanding {
+            phase = .signedOut
+            return true
+        }
+        guard LaunchOptions.usesDemoData else { return false }
+        isDemo = true
+        snapshot = DemoTimetable.snapshot()
+        phase = .signedIn(DemoTimetable.account)
+        return true
     }
 }

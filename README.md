@@ -13,8 +13,8 @@
 
 | Rész | Hol | Állapot |
 | --- | --- | --- |
-| Közös Swift mag (`KretaKit`) | `apple/KretaKit` | Kész, 102 teszt, kb. 90% sorlefedettség |
-| iOS app, widgetek, Watch app, komplikációk | `apple/` | Megírva; a kód nagy része típusellenőrizve, de **eszközön még nem futott** |
+| Közös Swift mag (`KretaKit`) | `apple/KretaKit` | Kész, 115 teszt |
+| iOS app, widgetek, Live Activity, Watch app, komplikációk | `apple/` | Az Android app pontos átültetése Liquid Glass-szal; lefordul, szimulátorban kipróbálva, valódi eszközön még nem |
 | Közös Kotlin mag | `android/core` | Kész, 160 teszt |
 | Android app és widgetek | `android/app` | Lefordul, debug APK készül belőle; valódi fiókkal még nincs végigpróbálva |
 
@@ -97,7 +97,9 @@ Androidon a „Következő óra” widget a méretéhez igazodik: 4×2-n a futó
 
 ### Apple
 
-Kell hozzá Xcode 16 vagy újabb.
+Kell hozzá Xcode 26 vagy újabb; az app iOS 26-ot és watchOS 26-ot igényel (iPhone 11-től), mert a Liquid Glass felületet használja.
+
+Szimulátorban bejelentkezés nélkül is kipróbálható (csak Debug buildben): a `-DemoData` indítási argumentum kitalált órarendet tölt be, a `-Landing` a nyitóképernyőt, a `-WidgetGallery` a widgeteket mutatja.
 
 ```bash
 open apple/KretaOra.xcodeproj

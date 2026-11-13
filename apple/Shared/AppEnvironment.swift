@@ -11,15 +11,16 @@ enum AppEnvironment {
     static let snapshots: SnapshotStore = {
         if let shared = SnapshotStore.appGroup(appGroup) { return shared }
         // Without the App Group the app still works; only the widgets stay empty.
-        let fallback = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        let fallback = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? FileManager.default.temporaryDirectory
         return SnapshotStore(directory: fallback)
     }()
 }
 
 enum WidgetKind {
     static let nextLesson = "NextLessonWidget"
-    static let tomorrow = "TomorrowWidget"
-    static let day = "DayWidget"
+    static let dayStart = "DayStartWidget"
+    static let liveLesson = "LiveLessonActivity"
 }
 
 /// Keys of the dictionary the phone sends to the watch.

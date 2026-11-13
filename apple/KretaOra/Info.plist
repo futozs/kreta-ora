@@ -28,6 +28,15 @@
 	<false/>
 	<key>KretaAppGroup</key>
 	<string>$(KRETA_APP_GROUP)</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>NSSupportsLiveActivitiesFrequentUpdates</key>
+	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BricolageGrotesque.ttf</string>
+		<string>HankenGrotesk.ttf</string>
+	</array>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

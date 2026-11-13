@@ -27,5 +27,10 @@
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.widgetkit-extension</string>
 	</dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>BricolageGrotesque.ttf</string>
+		<string>HankenGrotesk.ttf</string>
+	</array>
 </dict>
 </plist>

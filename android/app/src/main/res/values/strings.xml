@@ -36,7 +36,7 @@
     <string name="day_today">Ma</string>
     <string name="day_tomorrow">Holnap</string>
     <string name="day_yesterday">Tegnap</string>
-    <string name="day_cancelled_count">%1$d óra elmarad</string>
+    <string name="day_cancelled_count">%1$d\u00A0óra\u00A0elmarad</string>
     <string name="day_substituted_count">%1$d helyettesítés</string>
     <string name="day_gap">%1$d perc szünet</string>
     <string name="day_empty_title">Nincs órád.</string>

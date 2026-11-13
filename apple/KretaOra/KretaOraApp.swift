@@ -16,7 +16,7 @@ struct KretaOraApp: App {
         WindowGroup {
             RootView()
                 .environment(model)
-                .tint(Color.board)
+                .tint(Palette.text)
                 .task { await model.start() }
         }
         .onChange(of: scenePhase) { _, phase in
@@ -39,16 +39,29 @@ struct RootView: View {
     @Environment(AppModel.self) private var model
 
     var body: some View {
-        switch model.phase {
-        case .loading:
-            ZStack {
-                Color.board.ignoresSafeArea()
-                ProgressView().tint(Color.chalk)
+        @Bindable var model = model
+        ZStack {
+            Palette.background.ignoresSafeArea()
+            switch model.phase {
+            case .loading:
+                EmptyView()
+            case .signedOut:
+                LandingView()
+            case .signedIn:
+                TimetableScreen()
             }
-        case .signedOut:
-            LoginView()
-        case .signedIn(let account):
-            TimetableView(account: account)
         }
+        .fullScreenCover(item: $model.loginAttempt) { attempt in
+            LoginWebScreen(
+                attempt: attempt,
+                onRedirect: { redirect in Task { await model.completeLogin(redirect: redirect) } },
+                onCancel: { model.loginAttempt = nil }
+            )
+        }
+        #if DEBUG
+        .overlay {
+            if LaunchOptions.showsWidgetGallery { WidgetGallery() }
+        }
+        #endif
     }
 }

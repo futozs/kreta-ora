@@ -48,7 +48,7 @@ public struct StatusSummary: Equatable, Sendable {
     }
 
     /// "Holnap", "Hétfő", or "Hétfő, nov. 23." once it is a week or more away.
-    static func dayName(_ date: Date, relativeTo now: Date) -> String {
+    public static func dayName(_ date: Date, relativeTo now: Date) -> String {
         let days = KretaDate.days(from: now, to: date)
         if days == 1 { return "Holnap" }
         let weekday = KretaDate.weekdayName(date).capitalizedFirst

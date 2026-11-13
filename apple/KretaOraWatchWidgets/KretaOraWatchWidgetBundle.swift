@@ -6,6 +6,6 @@ import WidgetKit
 struct KretaOraWatchWidgetBundle: WidgetBundle {
     var body: some Widget {
         NextLessonWidget()
-        TomorrowWidget()
+        DayStartWidget()
     }
 }
