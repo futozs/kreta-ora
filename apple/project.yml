@@ -1,0 +1,156 @@
+# XcodeGen project description. Regenerate the Xcode project with:
+#   brew install xcodegen && cd apple && xcodegen
+name: KretaOra
+
+options:
+  deploymentTarget:
+    iOS: "17.0"
+    watchOS: "10.0"
+  createIntermediateGroups: true
+  developmentLanguage: hu
+
+settings:
+  base:
+    # Bundle identifiers must be unique per Apple account. Change this one
+    # value and every target, the App Group and the background task follow.
+    KRETA_BUNDLE_PREFIX: hu.kretaora.app
+    KRETA_APP_GROUP: group.$(KRETA_BUNDLE_PREFIX)
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.0"
+    CODE_SIGN_STYLE: Automatic
+    GENERATE_INFOPLIST_FILE: NO
+
+packages:
+  KretaKit:
+    path: KretaKit
+
+targets:
+  KretaOra:
+    type: application
+    platform: iOS
+    sources:
+      - KretaOra
+      - Shared
+    dependencies:
+      - package: KretaKit
+      - target: KretaOraWidgets
+      - target: KretaOraWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(KRETA_BUNDLE_PREFIX)
+        TARGETED_DEVICE_FAMILY: "1"
+    info:
+      path: KretaOra/Info.plist
+      properties:
+        CFBundleDisplayName: Kréta Óra
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        KretaAppGroup: $(KRETA_APP_GROUP)
+        UIBackgroundModes: [fetch]
+        BGTaskSchedulerPermittedIdentifiers:
+          - $(KRETA_BUNDLE_PREFIX).refresh
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        ITSAppUsesNonExemptEncryption: false
+    entitlements:
+      path: KretaOra/KretaOra.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - $(KRETA_APP_GROUP)
+
+  KretaOraWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - KretaOraWidgets
+      - Shared
+      - SharedWidgets
+    dependencies:
+      - package: KretaKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(KRETA_BUNDLE_PREFIX).widgets
+    info:
+      path: KretaOraWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Kréta Óra
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        KretaAppGroup: $(KRETA_APP_GROUP)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: KretaOraWidgets/KretaOraWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - $(KRETA_APP_GROUP)
+
+  KretaOraWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - KretaOraWatch
+      - Shared
+    dependencies:
+      - package: KretaKit
+      - target: KretaOraWatchWidgets
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(KRETA_BUNDLE_PREFIX).watchkitapp
+    info:
+      path: KretaOraWatch/Info.plist
+      properties:
+        CFBundleDisplayName: Kréta Óra
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        KretaAppGroup: $(KRETA_APP_GROUP)
+        WKApplication: true
+        WKCompanionAppBundleIdentifier: $(KRETA_BUNDLE_PREFIX)
+    entitlements:
+      path: KretaOraWatch/KretaOraWatch.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - $(KRETA_APP_GROUP)
+
+  KretaOraWatchWidgets:
+    type: app-extension
+    platform: watchOS
+    sources:
+      - KretaOraWatchWidgets
+      - Shared
+      - SharedWidgets
+    dependencies:
+      - package: KretaKit
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(KRETA_BUNDLE_PREFIX).watchkitapp.widgets
+    info:
+      path: KretaOraWatchWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Kréta Óra
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        KretaAppGroup: $(KRETA_APP_GROUP)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    entitlements:
+      path: KretaOraWatchWidgets/KretaOraWatchWidgets.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - $(KRETA_APP_GROUP)
+
+schemes:
+  KretaOra:
+    build:
+      targets:
+        KretaOra: all
+    run:
+      config: Debug
+  KretaOraWatch:
+    build:
+      targets:
+        KretaOraWatch: all
+    run:
+      config: Debug
