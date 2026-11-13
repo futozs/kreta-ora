@@ -3,7 +3,9 @@ package hu.kretaora.core.timetable
 import hu.kretaora.core.model.KretaDate
 import hu.kretaora.core.model.Lesson
 import hu.kretaora.core.model.capitalizedFirst
+import java.time.DayOfWeek
 import java.time.Instant
+import java.time.LocalDate
 
 private const val DAYS_IN_WEEK = 7
 private const val DEFAULT_UPCOMING_DAYS = 14
@@ -117,4 +119,19 @@ fun TimetableSnapshot.window(now: Instant, days: Int): TimetableSnapshot {
         rangeStart = start,
         rangeEnd = maxOf(start, end),
     )
+}
+
+/**
+ * The days a day-by-day view pages through: every weekday of the window, and
+ * a weekend day only when it has a lesson. A weekday without lessons stays in,
+ * so the week keeps its shape.
+ */
+fun TimetableSnapshot.pagerDays(): List<LocalDate> {
+    val first = KretaDate.localDate(rangeStart)
+    val last = KretaDate.localDate(rangeEnd).minusDays(1)
+    val withLessons = lessons.filter { it.kind == Lesson.Kind.LESSON }.map { KretaDate.localDate(it.start) }.toSet()
+    return generateSequence(first) { it.plusDays(1) }
+        .takeWhile { !it.isAfter(last) }
+        .filter { it.dayOfWeek < DayOfWeek.SATURDAY || it in withLessons }
+        .toList()
 }

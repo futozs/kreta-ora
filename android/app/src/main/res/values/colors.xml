@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="window_background">#F6F2EA</color>
-    <color name="ic_launcher_background">#1F5C4A</color>
-    <color name="notification_accent">#1F5C4A</color>
+    <!-- The paper ground, shown before the first frame is drawn. -->
+    <color name="window_background">#F3F0E8</color>
+    <color name="ic_launcher_background">#FFD60A</color>
+    <color name="notification_accent">#B38F00</color>
 </resources>

@@ -1,11 +1,13 @@
 package hu.kretaora.core
 
 import hu.kretaora.core.model.KretaDate
+import hu.kretaora.core.model.Lesson
 import hu.kretaora.core.model.capitalizedFirst
 import hu.kretaora.core.timetable.Schedule
 import hu.kretaora.core.timetable.StatusSummary
 import hu.kretaora.core.timetable.focusDay
 import hu.kretaora.core.timetable.nextSchoolDay
+import hu.kretaora.core.timetable.pagerDays
 import hu.kretaora.core.timetable.summaryOf
 import hu.kretaora.core.timetable.upcomingDays
 import hu.kretaora.core.timetable.window
@@ -14,6 +16,7 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
 
 class StatusSummaryTest {
     // Monday: 1st and 3rd take place, the 2nd is cancelled.
@@ -148,5 +151,23 @@ class StatusSummaryTest {
         assertEquals("nov. 16.", KretaDate.shortDate(KretaDate.localDate(Fixture.date(16))))
         assertEquals("Ének-zene", "ének-zene".capitalizedFirst())
         assertEquals("", "".capitalizedFirst())
+    }
+
+    @Test
+    fun `the pager lists every weekday and only the weekend days that have a lesson`() {
+        // Monday the 16th to Sunday the 22nd. Lessons on Monday and on Saturday;
+        // Sunday holds only an event.
+        val saturday = Fixture.lesson("sat", day = 21, index = 1)
+        val sundayEvent = Fixture.lesson("sun", day = 22, index = 1, kind = Lesson.Kind.EVENT)
+        val days = Fixture.snapshot(listOf(first, saturday, sundayEvent), from = 16, to = 23).pagerDays()
+
+        assertEquals((16..21).map { LocalDate.of(2026, 11, it) }, days)
+    }
+
+    @Test
+    fun `a weekday without lessons stays in the pager, and an empty window is empty`() {
+        val days = Fixture.snapshot(emptyList(), from = 16, to = 23).pagerDays()
+        assertEquals((16..20).map { LocalDate.of(2026, 11, it) }, days)
+        assertTrue(Fixture.snapshot(emptyList(), from = 16, to = 16).pagerDays().isEmpty())
     }
 }

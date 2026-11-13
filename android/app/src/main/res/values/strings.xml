@@ -3,40 +3,45 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
     <string name="app_name">Kréta Óra</string>
 
-    <!-- Bejelentkezés -->
-    <string name="login_tagline">Az órarended, és azonnal szól, ha változik.</string>
-    <string name="login_institution_label">Intézménykód</string>
-    <string name="login_institution_hint">Nem kötelező. A KRÉTA oldalán is kiválaszthatod az iskolát.</string>
-    <string name="login_button">Bejelentkezés a KRÉTA-val</string>
-    <string name="login_privacy">A jelszavadat a KRÉTA saját oldalán adod meg. Az alkalmazás nem látja, és semmit nem küld saját szerverre.</string>
+    <!-- Nyitóképernyő és bejelentkezés -->
+    <string name="landing_headline">Mi a következő órád?</string>
+    <string name="landing_body">Lapozható órarend, widget a kezdőképernyőre, és értesítés, ha elmarad egy óra vagy helyettesítés van.</string>
+    <string name="landing_button">Belépés KRÉTA-fiókkal</string>
+    <string name="landing_privacy">A jelszavadat a KRÉTA saját oldalán adod meg, az alkalmazás nem látja. Nem hivatalos alkalmazás.</string>
     <string name="login_web_title">KRÉTA bejelentkezés</string>
+    <string name="login_web_host">idp.e-kreta.hu</string>
     <string name="login_cancel">Mégse</string>
 
     <!-- Órarend -->
+    <string name="timetable_back_to_today">Vissza mára</string>
+    <string name="timetable_refresh">Frissítés</string>
     <string name="timetable_sign_out">Kijelentkezés</string>
     <string name="timetable_sign_in_again">Bejelentkezés újra</string>
-    <string name="timetable_empty_title">Nincs megjeleníthető óra</string>
-    <string name="timetable_empty_body">A következő hetekre nincs óra az órarendben. Húzd le a frissítéshez.</string>
     <string name="timetable_synced_at">Frissítve: %1$s, %2$s</string>
+    <string name="account_note">Nem hivatalos alkalmazás. Az adataid a telefonodon maradnak, az app csak a KRÉTA szervereivel beszél.</string>
+
+    <!-- Órák -->
+    <string name="lesson_number">%1$d.</string>
     <string name="lesson_cancelled">Elmarad</string>
     <string name="lesson_substitute">helyettesít: %1$s</string>
-    <string name="lesson_test">Számonkérés</string>
-    <string name="lesson_number">%1$d.</string>
-    <string name="message_dismiss">Rendben</string>
-
-    <!-- Most / következő -->
-    <string name="status_nothing_left">A következő hetekre nincs óra az órarendben.</string>
-    <string name="status_then">Utána: %1$s, %2$s</string>
-    <string name="status_last_of_day">Ez a mai utolsó órád.</string>
+    <string name="lesson_test">számonkérés</string>
+    <string name="status_left">van hátra</string>
     <string name="status_minutes_left">még %1$d perc</string>
-    <string name="status_starts_in">%1$d perc múlva</string>
-    <string name="status_alert_cancelled">Elmarad: %1$s</string>
-    <string name="status_alert_lesson">%1$s (%2$d. óra)</string>
+    <string name="block_starts_in_minutes">%1$d perc múlva kezdődik</string>
+    <string name="block_starts_in_hours">%1$d óra múlva kezdődik</string>
+    <string name="block_starts_in_hours_minutes">%1$d óra %2$d perc múlva kezdődik</string>
+    <string name="status_nothing_left">A következő hetekre nincs óra az órarendben.</string>
 
     <!-- Napok -->
     <string name="day_today">Ma</string>
+    <string name="day_tomorrow">Holnap</string>
+    <string name="day_yesterday">Tegnap</string>
     <string name="day_cancelled_count">%1$d óra elmarad</string>
     <string name="day_substituted_count">%1$d helyettesítés</string>
+    <string name="day_gap">%1$d perc szünet</string>
+    <string name="day_empty_title">Nincs órád.</string>
+    <string name="day_empty_next">Legközelebb %1$s, %2$s: %3$s.</string>
+    <string name="day_empty_body">A következő hetekre sincs óra az órarendben.</string>
 
     <!-- Hibák -->
     <string name="error_offline">Nincs kapcsolat a KRÉTA szerverével. A legutóbb mentett órarendet látod.</string>
@@ -52,8 +57,10 @@
 
     <!-- Widgetek -->
     <string name="widget_next_name">Következő óra</string>
-    <string name="widget_next_description">A most tartó és a következő órád, teremmel és tanárral.</string>
+    <string name="widget_next_description">A most tartó vagy a következő órád, a tantárgy színében.</string>
     <string name="widget_day_start_name">Mikor kezdünk?</string>
     <string name="widget_day_start_description">A következő tanítási nap első órája és a nap hossza.</string>
     <string name="widget_signed_out">Jelentkezz be az alkalmazásban.</string>
+    <string name="widget_lesson_number">%1$d. óra</string>
+    <string name="widget_later">Utána</string>
 </resources>
