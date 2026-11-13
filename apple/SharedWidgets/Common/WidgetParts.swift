@@ -71,16 +71,22 @@ struct WidgetCountdown: View {
     var labelStyle: KretaTextStyle = KretaType.strong
     var color: Color = Palette.ink
     var labelColor: Color = Palette.inkMuted
+    /// The label under the time instead of beside it, for narrow places.
+    var isStacked = false
 
     var body: some View {
-        // Beside the time when it fits, under it in a narrow widget.
-        ViewThatFits(in: .horizontal) {
-            HStack(alignment: .lastTextBaseline, spacing: 8) {
+        // Chosen by the caller rather than measured: the widget renderer
+        // cannot measure a ticking timer (ViewThatFits, fixedSize), and a
+        // widget that tries comes out blank.
+        if isStacked {
+            VStack(alignment: .leading, spacing: 0) {
                 valueText
                 labelText
             }
-            VStack(alignment: .leading, spacing: 0) {
+        } else {
+            HStack(alignment: .lastTextBaseline, spacing: 8) {
                 valueText
+                    .layoutPriority(1)
                 labelText
             }
         }
@@ -92,7 +98,6 @@ struct WidgetCountdown: View {
             .monospacedDigit()
             .foregroundStyle(color)
             .lineLimit(1)
-            .fixedSize()
     }
 
     private var labelText: some View {
@@ -123,7 +128,8 @@ struct WidgetCountdown: View {
     }
 }
 
-/// The system's own timer-driven bar, tinted to sit on a subject colour.
+/// The system's own timer-driven bar, tinted to sit on a subject colour. Its
+/// size is pinned: left to measure itself, the bar crashes the widget renderer.
 struct WidgetTimerBar: View {
     let interval: ClosedRange<Date>
     var tint: Color = Palette.ink
@@ -132,6 +138,8 @@ struct WidgetTimerBar: View {
         ProgressView(timerInterval: interval, countsDown: false) { EmptyView() } currentValueLabel: { EmptyView() }
             .progressViewStyle(.linear)
             .tint(tint)
+            .frame(maxWidth: .infinity)
+            .frame(height: 4)
             .accessibilityHidden(true)
     }
 }

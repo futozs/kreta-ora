@@ -178,7 +178,8 @@ struct LiveLessonSmall: View {
                     .kretaFont(KretaType.countdown.size(26), scalesWithDynamicType: false)
                     .foregroundStyle(Palette.ink)
                     .multilineTextAlignment(.leading)
-                    .fixedSize()
+                    // Not fixedSize: the renderer cannot measure a ticking timer.
+                    .layoutPriority(1)
                 Text(focus.isRunning ? L10n.left : L10n.widgetStartsIn)
                     .kretaFont(KretaType.strong.size(11), scalesWithDynamicType: false)
                     .foregroundStyle(Palette.inkMuted)
@@ -276,29 +277,25 @@ struct LiveDayBar: View {
     var body: some View {
         let start = state.start
         let end = max(state.end, start.addingTimeInterval(60))
-        GeometryReader { proxy in
-            let segments = bar(width: proxy.size.width, start: start, end: end)
-            segments
-                .opacity(0.35)
-                .overlay {
-                    segments.mask(alignment: .leading) {
-                        ProgressView(timerInterval: start...end, countsDown: false) { EmptyView() } currentValueLabel: { EmptyView() }
-                            .progressViewStyle(.linear)
-                            .tint(.white)
-                            .scaleEffect(x: 1, y: 8, anchor: .center)
-                    }
+        let segments = bar(start: start, end: end)
+        segments
+            .opacity(0.35)
+            .overlay {
+                segments.mask(alignment: .leading) {
+                    ProgressView(timerInterval: start...end, countsDown: false) { EmptyView() } currentValueLabel: { EmptyView() }
+                        .progressViewStyle(.linear)
+                        .tint(.white)
+                        .scaleEffect(x: 1, y: 8, anchor: .center)
                 }
-        }
-        .frame(height: height)
-        .accessibilityHidden(true)
+            }
+            .frame(height: height)
+            .accessibilityHidden(true)
     }
 
-    private func bar(width: CGFloat, start: Date, end: Date) -> some View {
+    private func bar(start: Date, end: Date) -> some View {
         let total = end.timeIntervalSince(start)
-        return ZStack(alignment: .leading) {
+        return SpanLayout(height: height) {
             ForEach(state.lessons) { segment in
-                let x = width * segment.start.timeIntervalSince(start) / total
-                let length = max(width * segment.end.timeIntervalSince(segment.start) / total - 2, 2)
                 Group {
                     if let swatch = segment.swatch {
                         Capsule().fill(Subjects.color(swatch))
@@ -306,11 +303,14 @@ struct LiveDayBar: View {
                         Capsule().strokeBorder(Palette.textFaint, lineWidth: 1.5)
                     }
                 }
-                .frame(width: length, height: height)
-                .offset(x: x)
+                // A hair of space between lessons that follow without a break.
+                .padding(.trailing, 2)
+                .spanShare(
+                    start: segment.start.timeIntervalSince(start) / total,
+                    length: segment.end.timeIntervalSince(segment.start) / total
+                )
             }
         }
-        .frame(width: width, height: height, alignment: .leading)
     }
 }
 #endif

@@ -12,33 +12,31 @@ struct DayStartHomeView: View {
         if entry.schedule == nil {
             WidgetNote(title: L10n.appName, message: L10n.widgetSignedOut)
         } else if let card = entry.dayStart {
-            GeometryReader { proxy in
-                content(card, size: proxy.size)
-            }
+            content(card)
         } else {
             WidgetNote(title: L10n.widgetDayStartName, message: L10n.nothingLeft)
         }
     }
 
-    private func content(_ card: DayStartCard, size: CGSize) -> some View {
+    private func content(_ card: DayStartCard) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(card.label)
                 .kretaFont(KretaType.body.weight(500), scalesWithDynamicType: false)
                 .foregroundStyle(Palette.textDim)
                 .lineLimit(1)
             Text(card.time)
-                .kretaFont(KretaType.countdown.size(Self.timeSize(for: size)), scalesWithDynamicType: false)
-                .tracking(-Self.timeSize(for: size) * 0.04)
+                .kretaFont(KretaType.countdown.size(timeSize), scalesWithDynamicType: false)
+                .tracking(-timeSize * 0.04)
                 .monospacedDigit()
                 .foregroundStyle(Palette.text)
                 .lineLimit(1)
-                .fixedSize()
+                .minimumScaleFactor(0.5)
             Spacer(minLength: 4)
             Text(card.title)
                 .kretaFont(KretaType.blockTitle.size(18).weight(800), scalesWithDynamicType: false)
                 .foregroundStyle(Palette.text)
                 .lineLimit(1)
-            if size.height >= Self.tallHeight, let detail = card.detail {
+            if isTall, let detail = card.detail {
                 Text(detail)
                     .kretaFont(KretaType.small, scalesWithDynamicType: false)
                     .foregroundStyle(Palette.textDim)
@@ -67,13 +65,19 @@ struct DayStartHomeView: View {
         }
     }
 
-    private static let tallHeight: CGFloat = 150
+    // Sized by family rather than measured: the widget renderer crashes on
+    // GeometryReader. These are the sizes the Android rule (height left over,
+    // and the width "88:88" needs) gives inside the standard margins.
+    private var isTall: Bool {
+        #if os(iOS)
+        family == .systemLarge || family == .systemExtraLarge
+        #else
+        false
+        #endif
+    }
 
-    /// The Android rule: limited by the height left over and by the width "88:88" needs.
-    static func timeSize(for size: CGSize) -> CGFloat {
-        let byHeight = (size.height - 120) / 1.05
-        let byWidth = size.width / 2.5
-        return min(max(min(byHeight, byWidth), 46), 120)
+    private var timeSize: CGFloat {
+        isTall ? 120 : 46
     }
 }
 

@@ -89,6 +89,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(KRETA_BUNDLE_PREFIX).widgets
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) WIDGET_EXTENSION
     info:
       path: KretaOraWidgets/Info.plist
       properties:
@@ -160,6 +161,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(KRETA_BUNDLE_PREFIX).watchkitapp.widgets
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) WIDGET_EXTENSION
     info:
       path: KretaOraWatchWidgets/Info.plist
       properties:

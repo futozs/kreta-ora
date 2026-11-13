@@ -49,9 +49,35 @@ enum KretaFonts {
     static func font(_ family: KretaFontFamily, weight: CGFloat, size: CGFloat, isTabular: Bool = false) -> Font {
         let key = Key(family: family, weight: weight, size: (size * 2).rounded() / 2, isTabular: isTabular)
         if let cached = cache.withLock({ $0[key] }) { return cached }
+        #if WIDGET_EXTENSION
+        // Widgets and Live Activities are archived before the system draws
+        // them, and a Font built from a CTFont does not survive that: the
+        // whole view comes out empty. A named custom font does.
+        let font = archivableFont(key)
+        #else
         let font = Font(makeCTFont(key))
+        #endif
         cache.withLock { $0[key] = font }
         return font
+    }
+
+    /// The font by name with a weight, which the widget archiver can carry.
+    /// The optical size stays at the font's default, the only thing lost.
+    private static func archivableFont(_ key: Key) -> Font {
+        let font = Font.custom(key.family.postScriptName, fixedSize: key.size).weight(fontWeight(key.weight))
+        return key.isTabular ? font.monospacedDigit() : font
+    }
+
+    private static func fontWeight(_ value: CGFloat) -> Font.Weight {
+        switch value {
+        case ..<350: .light
+        case ..<450: .regular
+        case ..<550: .medium
+        case ..<650: .semibold
+        case ..<750: .bold
+        case ..<850: .heavy
+        default: .black
+        }
     }
 
     private static func makeCTFont(_ key: Key) -> CTFont {

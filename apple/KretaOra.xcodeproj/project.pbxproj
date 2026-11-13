@@ -94,9 +94,11 @@
 		B03D1228D29FD5244AD053B4 /* LiveLessonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1BCD56B96633F016AE40B01 /* LiveLessonController.swift */; };
 		B0C3A71E769D4D196FA91CC8 /* SubjectSymbol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84AEAD76ED6DA3CB1306A051 /* SubjectSymbol.swift */; };
 		B15F9132FA22BFE60CB9A5EE /* NextLessonWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D318A5F2F9AE5D46A3F36D2 /* NextLessonWidget.swift */; };
+		B4F42EFED46033A7ACB160B9 /* WidgetLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE01624AAA52AFD7D43FD6C /* WidgetLayouts.swift */; };
 		B93766E267D51B09F3C74EA5 /* NextLessonWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D318A5F2F9AE5D46A3F36D2 /* NextLessonWidget.swift */; };
 		BBA0FDED5E9703C91CA17785 /* KretaType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538052F3458704191EEEFC65 /* KretaType.swift */; };
 		BC47DA9DE430125A54EFF695 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C663972C14285CB2E270E5B /* L10n.swift */; };
+		BEA43F1E6AA7B2E3D945AEAD /* WidgetLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE01624AAA52AFD7D43FD6C /* WidgetLayouts.swift */; };
 		C21315F7EAF3B1019178F472 /* NextLessonHomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9C96A0F97CA79A37C0221D /* NextLessonHomeViews.swift */; };
 		C664C5F73D52845958A863CD /* WatchLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 699B0274C1EB96D82F726126 /* WatchLink.swift */; };
 		C88EDCB0797F736F00CAD571 /* BricolageGrotesque.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5CA500FD00B38344073C41EA /* BricolageGrotesque.ttf */; };
@@ -120,6 +122,7 @@
 		DE6E189BA5E65FAA94823EF8 /* HankenGrotesk-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 96EA1561B0B3CE3F02282488 /* HankenGrotesk-OFL.txt */; };
 		DEEB397980427C4A9F38D7BF /* LaunchOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 304CBE1306E59CFAADDC13EF /* LaunchOptions.swift */; };
 		E18B83EFCCA6D022A4504E18 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AF1C61E68790D46E8C330C /* AppModel.swift */; };
+		E20E25EE8B258A83FA2083B2 /* WidgetLayouts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE01624AAA52AFD7D43FD6C /* WidgetLayouts.swift */; };
 		E31EDEA3C689D978358C5C99 /* LivePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1EA73BBAD39534B471180FE /* LivePreferences.swift */; };
 		E38616690F94865F24CC5706 /* HideLiveLessonIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DD473805789D0AE757B2939 /* HideLiveLessonIntent.swift */; };
 		E38A253BED106D2EF6D670A1 /* LiveLessonAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF350A883607307F9A888C81 /* LiveLessonAttributes.swift */; };
@@ -253,6 +256,7 @@
 		873ACF868C8F07E07118D65D /* KretaOraWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KretaOraWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96EA1561B0B3CE3F02282488 /* HankenGrotesk-OFL.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "HankenGrotesk-OFL.txt"; sourceTree = "<group>"; };
 		9C663972C14285CB2E270E5B /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		9CE01624AAA52AFD7D43FD6C /* WidgetLayouts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLayouts.swift; sourceTree = "<group>"; };
 		A1FFC5277E37E4415C1B5D60 /* KretaOra.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = KretaOra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAFB46BE6DB5DADD840C0ACD /* MinuteSteps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinuteSteps.swift; sourceTree = "<group>"; };
 		ABEA90AE52016E4379FA95C1 /* WidgetParts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetParts.swift; sourceTree = "<group>"; };
@@ -437,6 +441,7 @@
 			children = (
 				C2297070D863E2A8FA951041 /* DayStartCard.swift */,
 				E899B5A6A29959ADA688B757 /* TimetableProvider.swift */,
+				9CE01624AAA52AFD7D43FD6C /* WidgetLayouts.swift */,
 				ABEA90AE52016E4379FA95C1 /* WidgetParts.swift */,
 			);
 			path = Common;
@@ -802,6 +807,7 @@
 				C664C5F73D52845958A863CD /* WatchLink.swift in Sources */,
 				747819BA7E87A0988A76DC6F /* WeekStrip.swift in Sources */,
 				973E93535F8DD088C047E2CC /* WidgetGallery.swift in Sources */,
+				BEA43F1E6AA7B2E3D945AEAD /* WidgetLayouts.swift in Sources */,
 				3648E9EEC0FA65E1224A8BE9 /* WidgetParts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -834,6 +840,7 @@
 				52D5453B917D7DBBA2CCF4CA /* Palette.swift in Sources */,
 				74F2C24D86A12D4D8A61B472 /* SubjectSymbol.swift in Sources */,
 				49261BF5AC68D67F1BA7B19A /* TimetableProvider.swift in Sources */,
+				E20E25EE8B258A83FA2083B2 /* WidgetLayouts.swift in Sources */,
 				7C8382D0F25C0BABBAC66B30 /* WidgetParts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -866,6 +873,7 @@
 				D99C71474CE29CE185063A08 /* Palette.swift in Sources */,
 				B0C3A71E769D4D196FA91CC8 /* SubjectSymbol.swift in Sources */,
 				504F09C1E3D4E277FE1F271D /* TimetableProvider.swift in Sources */,
+				B4F42EFED46033A7ACB160B9 /* WidgetLayouts.swift in Sources */,
 				C8937B84EAB40E4FCCF7B681 /* WidgetParts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -929,6 +937,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(KRETA_BUNDLE_PREFIX).widgets";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) WIDGET_EXTENSION";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -962,6 +971,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "$(KRETA_BUNDLE_PREFIX).widgets";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) WIDGET_EXTENSION";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1157,6 +1167,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(KRETA_BUNDLE_PREFIX).watchkitapp.widgets";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) WIDGET_EXTENSION";
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Release;
@@ -1174,6 +1185,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(KRETA_BUNDLE_PREFIX).watchkitapp.widgets";
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) WIDGET_EXTENSION";
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = Debug;

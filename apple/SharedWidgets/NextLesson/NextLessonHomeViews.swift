@@ -28,16 +28,12 @@ struct NextLessonHomeView: View {
     @ViewBuilder private func content(_ model: NextLessonModel) -> some View {
         switch family {
         case .systemMedium where !model.following.isEmpty:
-            GeometryReader { proxy in
-                // The block takes three fifths, the tiles the rest, as on Android.
-                let blockWidth = (proxy.size.width - Self.gap) * 0.6
-                HStack(spacing: Self.gap) {
-                    MainBlock(model: model, now: entry.date, layout: .split)
-                        .frame(width: blockWidth)
-                    VStack(spacing: Self.gap) {
-                        ForEach(model.following.prefix(3)) { lesson in
-                            FollowTile(lesson: lesson, isRoomy: model.following.count < 3)
-                        }
+            // The block takes three fifths, the tiles the rest, as on Android.
+            SplitLayout(ratio: 0.6, spacing: Self.gap) {
+                MainBlock(model: model, now: entry.date, layout: .split)
+                VStack(spacing: Self.gap) {
+                    ForEach(model.following.prefix(3)) { lesson in
+                        FollowTile(lesson: lesson, isRoomy: model.following.count < 3)
                     }
                 }
             }
@@ -94,7 +90,8 @@ private struct MainBlock: View {
                 model: model,
                 now: now,
                 style: KretaType.countdown.size(countdownSize),
-                labelStyle: KretaType.strong.size(layout == .split ? 13 : 15).weight(500)
+                labelStyle: KretaType.strong.size(layout == .split ? 13 : 15).weight(500),
+                isStacked: layout != .wide
             )
             if model.phase == .running {
                 WidgetTimerBar(interval: lesson.start...lesson.end)

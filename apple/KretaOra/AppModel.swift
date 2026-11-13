@@ -2,6 +2,7 @@ import Foundation
 import KretaKit
 import Observation
 import os
+import WidgetKit
 
 /// What the screens observe. All network work is delegated to
 /// `SyncCoordinator`, which the background task uses as well.
@@ -150,8 +151,13 @@ final class AppModel {
         }
         guard LaunchOptions.usesDemoData else { return false }
         isDemo = true
-        snapshot = DemoTimetable.snapshot()
+        let demo = DemoTimetable.snapshot()
+        snapshot = demo
         phase = .signedIn(DemoTimetable.account)
+        // Also hand it to the widgets through the shared store, so the real
+        // widget extension can be checked on a simulator's home screen.
+        try? AppEnvironment.snapshots.save(demo)
+        WidgetCenter.shared.reloadAllTimelines()
         return true
     }
 }
