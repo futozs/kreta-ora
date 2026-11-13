@@ -30,7 +30,7 @@ struct DayStartHomeView: View {
                 .monospacedDigit()
                 .foregroundStyle(Palette.text)
                 .lineLimit(1)
-                .minimumScaleFactor(0.5)
+                .fixedSize()
             Spacer(minLength: 4)
             Text(card.title)
                 .kretaFont(KretaType.blockTitle.size(18).weight(800), scalesWithDynamicType: false)
