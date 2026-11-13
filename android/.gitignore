@@ -1,0 +1,19 @@
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local machine configuration (SDK path, signing)
+local.properties
+*.jks
+*.keystore
+
+# Kotlin
+.kotlin/
+
+# IDE
+.idea/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/

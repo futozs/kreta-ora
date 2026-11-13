@@ -15,8 +15,8 @@
 | --- | --- | --- |
 | Közös Swift mag (`KretaKit`) | `apple/KretaKit` | Kész, 101 teszt, kb. 90% sorlefedettség |
 | iOS app, widgetek, Watch app, komplikációk | `apple/` | Megírva; a kód nagy része típusellenőrizve, de **eszközön még nem futott** |
-| Közös Kotlin mag | `android/core` | Lásd lent |
-| Android app és widgetek | `android/app` | Lásd lent |
+| Közös Kotlin mag | `android/core` | Kész, 151 teszt |
+| Android app és widgetek | `android/app` | Lefordul, debug APK készül belőle; valódi fiókkal még nincs végigpróbálva |
 
 Az iOS és az Android app még nem lett valódi KRÉTA fiókkal kipróbálva. Az első futtatásnál számíts apróbb javítanivalókra.
 
@@ -81,11 +81,11 @@ A gyorsabb iOS-es értesítéshez egy kis „ébresztő" szerver kell, ami néma
 
 | Widget | iOS | Apple Watch | Android |
 | --- | --- | --- | --- |
-| Következő óra, visszaszámlálással | kis, közepes, zárolási képernyő | számlap, Smart Stack | igen |
-| Holnapi kezdés | kis, zárolási képernyő | számlap, Smart Stack | igen |
+| Következő óra | kis, közepes, zárolási képernyő | számlap, Smart Stack | kis, széles |
+| Holnapi kezdés („Mikor kezdünk?") | kis, zárolási képernyő | számlap, Smart Stack | kis, széles |
 | Napi órarend | közepes, nagy | – | – |
 
-A widgetek nem használnak hálózatot: a legutóbb letöltött órarendből rajzolnak, és előre beütemezik magukat minden óra elejére és végére.
+A widgetek nem használnak hálózatot: a legutóbb letöltött órarendből rajzolnak, és előre beütemezik magukat az órák elejére és végére. Apple eszközökön élő visszaszámlálás látszik. Androidon a rendszer a pontatlan ébresztőket néhány perccel később is kézbesítheti, ezért ott a widget óraidőket mutat, nem visszaszámlálást.
 
 ## Fejlesztés
 
@@ -113,7 +113,31 @@ apple/KretaKit/test.sh
 
 ### Android
 
-Lásd az [Android](#android-1) részt lent.
+Android Studio nem kell hozzá, elég a parancssori Android SDK és egy JDK 17.
+
+```bash
+brew install --cask android-commandlinetools android-platform-tools
+```
+
+A parancsokat az `android` mappából futtasd, beállított `ANDROID_HOME` és `JAVA_HOME` mellett. A mag tesztjei (ehhez SDK sem kell):
+
+```bash
+./gradlew -p core test
+```
+
+Debug APK fordítása:
+
+```bash
+./gradlew :app:assembleDebug
+```
+
+Telepítés USB-n csatlakoztatott telefonra (bekapcsolt USB-hibakereséssel):
+
+```bash
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+Az app `minSdk` 26 (Android 8.0). Csak az internet- és az értesítési engedélyt kéri; nincs benne Firebase vagy bármilyen külső szolgáltatás.
 
 ## Mappák
 

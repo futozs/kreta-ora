@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hungarian nouns keep their singular form after a number, so counted texts are plain strings. -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="PluralsCandidate">
+    <string name="app_name">Kréta Óra</string>
+
+    <!-- Bejelentkezés -->
+    <string name="login_tagline">Az órarended, és azonnal szól, ha változik.</string>
+    <string name="login_institution_label">Intézménykód</string>
+    <string name="login_institution_hint">Nem kötelező. A KRÉTA oldalán is kiválaszthatod az iskolát.</string>
+    <string name="login_button">Bejelentkezés a KRÉTA-val</string>
+    <string name="login_privacy">A jelszavadat a KRÉTA saját oldalán adod meg. Az alkalmazás nem látja, és semmit nem küld saját szerverre.</string>
+    <string name="login_web_title">KRÉTA bejelentkezés</string>
+    <string name="login_cancel">Mégse</string>
+
+    <!-- Órarend -->
+    <string name="timetable_sign_out">Kijelentkezés</string>
+    <string name="timetable_sign_in_again">Bejelentkezés újra</string>
+    <string name="timetable_empty_title">Nincs megjeleníthető óra</string>
+    <string name="timetable_empty_body">A következő hetekre nincs óra az órarendben. Húzd le a frissítéshez.</string>
+    <string name="timetable_synced_at">Frissítve: %1$s, %2$s</string>
+    <string name="lesson_cancelled">Elmarad</string>
+    <string name="lesson_substitute">helyettesít: %1$s</string>
+    <string name="lesson_test">Számonkérés</string>
+    <string name="lesson_number">%1$d.</string>
+    <string name="message_dismiss">Rendben</string>
+
+    <!-- Most / következő -->
+    <string name="status_nothing_left">A következő hetekre nincs óra az órarendben.</string>
+    <string name="status_then">Utána: %1$s, %2$s</string>
+    <string name="status_last_of_day">Ez a mai utolsó órád.</string>
+    <string name="status_minutes_left">még %1$d perc</string>
+    <string name="status_starts_in">%1$d perc múlva</string>
+    <string name="status_alert_cancelled">Elmarad: %1$s</string>
+    <string name="status_alert_lesson">%1$s (%2$d. óra)</string>
+
+    <!-- Napok -->
+    <string name="day_today">Ma</string>
+    <string name="day_cancelled_count">%1$d óra elmarad</string>
+    <string name="day_substituted_count">%1$d helyettesítés</string>
+
+    <!-- Hibák -->
+    <string name="error_offline">Nincs kapcsolat a KRÉTA szerverével. A legutóbb mentett órarendet látod.</string>
+    <string name="error_storage">A bejelentkezést nem sikerült biztonságosan elmenteni. Próbáld újra.</string>
+    <string name="error_session_expired">A KRÉTA munkamenet lejárt. A legutóbb mentett órarendet látod.</string>
+    <string name="error_sign_out">A kijelentkezés közben nem sikerült minden mentett adatot törölni.</string>
+
+    <!-- Értesítések -->
+    <string name="notification_channel_name">Órarendváltozások</string>
+    <string name="notification_channel_description">Elmaradó óra, helyettesítés, teremcsere és más változás az órarendben.</string>
+    <string name="notification_session_title">Jelentkezz be újra</string>
+    <string name="notification_session_body">A KRÉTA munkamenet lejárt, ezért az órarend figyelése szünetel.</string>
+
+    <!-- Widgetek -->
+    <string name="widget_next_name">Következő óra</string>
+    <string name="widget_next_description">A most tartó és a következő órád, teremmel és tanárral.</string>
+    <string name="widget_day_start_name">Mikor kezdünk?</string>
+    <string name="widget_day_start_description">A következő tanítási nap első órája és a nap hossza.</string>
+    <string name="widget_signed_out">Jelentkezz be az alkalmazásban.</string>
+</resources>
