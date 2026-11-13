@@ -147,12 +147,11 @@ struct TimetableDiffTests {
         #expect(diff([maths], [replacement]).map(\.kind).sorted { $0.rawValue < $1.rawValue } == [.added, .removed])
     }
 
-    @Test("free-slot placeholders and cancelled leftovers do not notify")
-    func placeholdersIgnored() {
-        let placeholder = Fixture.lesson("p", day: 17, index: 3, kind: .empty)
+    @Test("a lesson that shows up or disappears already cancelled does not notify")
+    func cancelledLeftoversIgnored() {
         let cancelledExtra = Fixture.lesson("x", day: 17, index: 4, cancelled: true)
-        #expect(diff([maths], [maths, placeholder, cancelledExtra]).isEmpty)
-        #expect(diff([maths, placeholder, cancelledExtra], [maths]).isEmpty)
+        #expect(diff([maths], [maths, cancelledExtra]).isEmpty)
+        #expect(diff([maths, cancelledExtra], [maths]).isEmpty)
     }
 
     @Test("school-year events are not lessons, so they never notify")

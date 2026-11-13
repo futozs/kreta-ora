@@ -5,20 +5,19 @@ import Testing
 @Suite("Schedule")
 struct ScheduleTests {
     // Monday: 1st 8:00–8:45, 2nd 8:55–9:40 (cancelled), 3rd 9:50–10:35.
-    // Tuesday: a free-slot placeholder, then the 2nd lesson at 8:55.
+    // Tuesday: one lesson, the 2nd, at 8:55.
     // Wednesday: a holiday event only.
     private let first = Fixture.lesson("mon-1", day: 16, index: 1)
     private let cancelled = Fixture.lesson("mon-2", day: 16, index: 2, name: "fizika", cancelled: true)
     private let third = Fixture.lesson("mon-3", day: 16, index: 3, name: "történelem")
-    private let placeholder = Fixture.lesson("tue-1", day: 17, index: 1, kind: .empty)
     private let tuesday = Fixture.lesson("tue-2", day: 17, index: 2, name: "angol nyelv")
     private let holiday = Fixture.lesson("wed-event", day: 18, index: 1, name: "őszi szünet", kind: .event)
 
     private var schedule: Schedule {
-        Schedule(lessons: [tuesday, third, holiday, placeholder, cancelled, first])
+        Schedule(lessons: [tuesday, third, holiday, cancelled, first])
     }
 
-    @Test("sorts entries and drops free-slot placeholders")
+    @Test("sorts entries and tells lessons from events")
     func normalizes() {
         #expect(schedule.entries.map(\.id) == ["mon-1", "mon-2", "mon-3", "tue-2", "wed-event"])
         #expect(schedule.lessons.map(\.id) == ["mon-1", "mon-2", "mon-3", "tue-2"])

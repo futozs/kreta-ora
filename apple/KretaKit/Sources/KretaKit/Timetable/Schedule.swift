@@ -14,13 +14,11 @@ public enum ScheduleStatus: Equatable, Sendable {
 
 /// Read-only questions over a list of lessons. All day math is school time.
 public struct Schedule: Sendable, Equatable {
-    /// Lessons and events sorted by start. Free-slot placeholders are dropped.
+    /// Lessons and events sorted by start.
     public let entries: [Lesson]
 
     public init(lessons: [Lesson]) {
-        entries = lessons
-            .filter { $0.kind != .empty }
-            .sorted { ($0.start, $0.id) < ($1.start, $1.id) }
+        entries = lessons.sorted { ($0.start, $0.id) < ($1.start, $1.id) }
     }
 
     /// Real lessons, including cancelled ones.

@@ -35,9 +35,6 @@ data class Lesson(
         /** A regular lesson. */
         LESSON,
 
-        /** A free slot placeholder (`UresOra`). */
-        EMPTY,
-
         /** A school-year event such as a holiday (`TanevRendjeEsemeny`). */
         EVENT,
     }
@@ -78,6 +75,7 @@ data class Lesson(
             val end = row.text("VegIdopont")?.let(KretaDate::parse) ?: return null
             if (end <= start) return null
 
+            val type = row.reference("Tipus").name
             val state = row.reference("Allapot")
             val stateText = listOfNotNull(state.name, state.description).joinToString(" ")
 
@@ -92,19 +90,22 @@ data class Lesson(
                 room = row.text("TeremNeve"),
                 topic = row.text("Tema"),
                 group = row.reference("OsztalyCsoport").name,
-                kind = kind(row.reference("Tipus").name),
-                isCancelled = stateText.contains("elmarad", ignoreCase = true),
+                kind = kind(type),
+                isCancelled = type == CANCELLED_TYPE || stateText.contains("elmarad", ignoreCase = true),
                 hasTest = row.text("BejelentettSzamonkeresUid") != null,
                 hasHomework = row.text("HaziFeladatUid") != null,
             )
         }
 
+        /**
+         * KRÉTA turns a cancelled lesson into an `UresOra` row that keeps its
+         * subject, slot and room. It is still a lesson, one that will not be
+         * held, so it must stay visible and must be announced.
+         */
+        private const val CANCELLED_TYPE = "UresOra"
+
         private fun kind(type: String?): Kind =
-            when (type) {
-                "UresOra" -> Kind.EMPTY
-                "TanevRendjeEsemeny" -> Kind.EVENT
-                else -> Kind.LESSON
-            }
+            if (type == "TanevRendjeEsemeny") Kind.EVENT else Kind.LESSON
     }
 }
 

@@ -13,9 +13,9 @@
 
 | Rész | Hol | Állapot |
 | --- | --- | --- |
-| Közös Swift mag (`KretaKit`) | `apple/KretaKit` | Kész, 101 teszt, kb. 90% sorlefedettség |
+| Közös Swift mag (`KretaKit`) | `apple/KretaKit` | Kész, 102 teszt, kb. 90% sorlefedettség |
 | iOS app, widgetek, Watch app, komplikációk | `apple/` | Megírva; a kód nagy része típusellenőrizve, de **eszközön még nem futott** |
-| Közös Kotlin mag | `android/core` | Kész, 151 teszt |
+| Közös Kotlin mag | `android/core` | Kész, 152 teszt |
 | Android app és widgetek | `android/app` | Lefordul, debug APK készül belőle; valódi fiókkal még nincs végigpróbálva |
 
 Az iOS és az Android app még nem lett valódi KRÉTA fiókkal kipróbálva. Az első futtatásnál számíts apróbb javítanivalókra.

@@ -41,9 +41,17 @@ struct LessonTests {
         #expect(substituted.effectiveTeacher == "Nagy Anna")
     }
 
-    @Test("maps free slots and school-year events")
-    func decodesKinds() throws {
-        #expect(try decode(Fixture.lessonJSON(type: "UresOra")).first?.kind == .empty)
+    @Test("an UresOra row is a cancelled lesson, whatever its state says")
+    func decodesCancelledType() throws {
+        let cancelled = try #require(try decode(Fixture.lessonJSON(type: "UresOra")).first)
+        #expect(cancelled.kind == .lesson)
+        #expect(cancelled.isCancelled)
+        #expect(!cancelled.isActive)
+        #expect(cancelled.name == "matematika")
+    }
+
+    @Test("maps school-year events")
+    func decodesEvents() throws {
         #expect(try decode(Fixture.lessonJSON(type: "TanevRendjeEsemeny")).first?.kind == .event)
     }
 

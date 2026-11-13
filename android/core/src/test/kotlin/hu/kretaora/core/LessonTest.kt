@@ -49,8 +49,15 @@ class LessonTest {
     }
 
     @Test
-    fun `maps free slots and school-year events`() {
-        assertEquals(Lesson.Kind.EMPTY, decode(Fixture.lessonJson(type = "UresOra")).first().kind)
+    fun `an UresOra row is a cancelled lesson, whatever its state says`() {
+        val cancelled = decode(Fixture.lessonJson(type = "UresOra")).first()
+        assertEquals(Lesson.Kind.LESSON, cancelled.kind)
+        assertTrue(cancelled.isCancelled)
+        assertEquals("matematika", cancelled.name)
+    }
+
+    @Test
+    fun `maps school-year events`() {
         assertEquals(Lesson.Kind.EVENT, decode(Fixture.lessonJson(type = "TanevRendjeEsemeny")).first().kind)
     }
 

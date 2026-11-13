@@ -100,8 +100,8 @@ public enum TimetableDiff {
         return kind.map { TimetableChange(kind: $0, lesson: after, previous: before) }
     }
 
-    /// Only real lessons take part. Free-slot placeholders are noise, and a
-    /// school-year event such as a day off is not a lesson that was added.
+    /// Only lessons take part. A school-year event such as a day off is not
+    /// a lesson that was added.
     private static func index(_ lessons: [Lesson]) -> [String: Lesson] {
         Dictionary(lessons.filter { $0.kind == .lesson }.map { ($0.id, $0) }) { first, _ in first }
     }

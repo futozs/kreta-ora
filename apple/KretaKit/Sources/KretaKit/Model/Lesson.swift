@@ -5,8 +5,6 @@ public struct Lesson: Codable, Hashable, Sendable, Identifiable {
     public enum Kind: String, Codable, Sendable {
         /// A regular lesson.
         case lesson
-        /// A free slot placeholder (`UresOra`).
-        case empty
         /// A school-year event such as a holiday (`TanevRendjeEsemeny`).
         case event
     }
@@ -166,17 +164,19 @@ private extension Lesson {
             topic: row.text("Tema"),
             group: row.reference("OsztalyCsoport").name,
             kind: Self.kind(type),
-            isCancelled: stateText.range(of: "elmarad", options: .caseInsensitive) != nil,
+            isCancelled: type == Self.cancelledType
+                || stateText.range(of: "elmarad", options: .caseInsensitive) != nil,
             hasTest: row.text("BejelentettSzamonkeresUid") != nil,
             hasHomework: row.text("HaziFeladatUid") != nil
         )
     }
 
+    /// KRÉTA turns a cancelled lesson into an `UresOra` row that keeps its
+    /// subject, slot and room. It is still a lesson, one that will not be
+    /// held, so it must stay visible and must be announced.
+    static let cancelledType = "UresOra"
+
     static func kind(_ type: String?) -> Kind {
-        switch type {
-        case "UresOra": .empty
-        case "TanevRendjeEsemeny": .event
-        default: .lesson
-        }
+        type == "TanevRendjeEsemeny" ? .event : .lesson
     }
 }

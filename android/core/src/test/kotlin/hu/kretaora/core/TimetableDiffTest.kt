@@ -157,11 +157,10 @@ class TimetableDiffTest {
     }
 
     @Test
-    fun `free-slot placeholders and cancelled leftovers do not notify`() {
-        val placeholder = Fixture.lesson("p", day = 17, index = 3, kind = Lesson.Kind.EMPTY)
+    fun `a lesson that shows up or disappears already cancelled does not notify`() {
         val cancelledExtra = Fixture.lesson("x", day = 17, index = 4, cancelled = true)
-        assertTrue(diff(listOf(maths), listOf(maths, placeholder, cancelledExtra)).isEmpty())
-        assertTrue(diff(listOf(maths, placeholder, cancelledExtra), listOf(maths)).isEmpty())
+        assertTrue(diff(listOf(maths), listOf(maths, cancelledExtra)).isEmpty())
+        assertTrue(diff(listOf(maths, cancelledExtra), listOf(maths)).isEmpty())
     }
 
     @Test

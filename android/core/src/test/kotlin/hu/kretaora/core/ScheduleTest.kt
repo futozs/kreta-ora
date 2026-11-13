@@ -13,19 +13,18 @@ import java.time.LocalDate
 
 class ScheduleTest {
     // Monday: 1st 8:00–8:45, 2nd 8:55–9:40 (cancelled), 3rd 9:50–10:35.
-    // Tuesday: a free-slot placeholder, then the 2nd lesson at 8:55.
+    // Tuesday: one lesson, the 2nd, at 8:55.
     // Wednesday: a holiday event only.
     private val first = Fixture.lesson("mon-1", day = 16, index = 1)
     private val cancelled = Fixture.lesson("mon-2", day = 16, index = 2, name = "fizika", cancelled = true)
     private val third = Fixture.lesson("mon-3", day = 16, index = 3, name = "történelem")
-    private val placeholder = Fixture.lesson("tue-1", day = 17, index = 1, kind = Lesson.Kind.EMPTY)
     private val tuesday = Fixture.lesson("tue-2", day = 17, index = 2, name = "angol nyelv")
     private val holiday = Fixture.lesson("wed-event", day = 18, index = 1, name = "őszi szünet", kind = Lesson.Kind.EVENT)
 
-    private val schedule = Schedule(listOf(tuesday, third, holiday, placeholder, cancelled, first))
+    private val schedule = Schedule(listOf(tuesday, third, holiday, cancelled, first))
 
     @Test
-    fun `sorts entries and drops free-slot placeholders`() {
+    fun `sorts entries and tells lessons from events`() {
         assertEquals(listOf("mon-1", "mon-2", "mon-3", "tue-2", "wed-event"), schedule.entries.map { it.id })
         assertEquals(listOf("mon-1", "mon-2", "mon-3", "tue-2"), schedule.lessons.map { it.id })
         assertEquals(listOf("mon-1", "mon-3", "tue-2"), schedule.activeLessons.map { it.id })

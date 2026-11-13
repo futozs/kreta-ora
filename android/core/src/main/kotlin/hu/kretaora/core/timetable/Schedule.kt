@@ -25,8 +25,8 @@ sealed interface ScheduleStatus {
 
 /** Read-only questions over a list of lessons. All day math is school time. */
 class Schedule(lessons: List<Lesson>) {
-    /** Lessons and events sorted by start. Free-slot placeholders are dropped. */
-    val entries: List<Lesson> = lessons.filter { it.kind != Lesson.Kind.EMPTY }.sortedWith(Lesson.ORDER)
+    /** Lessons and events sorted by start. */
+    val entries: List<Lesson> = lessons.sortedWith(Lesson.ORDER)
 
     /** Real lessons, including cancelled ones. */
     val lessons: List<Lesson> get() = entries.filter { it.kind == Lesson.Kind.LESSON }
