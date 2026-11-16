@@ -42,6 +42,7 @@
 		473335C932DFEF60FB8C773D /* KretaOraWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5700165CFC33D8FA85B98715 /* KretaOraWatchApp.swift */; };
 		48C80764E23D4F87017FD4CF /* NextLessonHomeViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF9C96A0F97CA79A37C0221D /* NextLessonHomeViews.swift */; };
 		49261BF5AC68D67F1BA7B19A /* TimetableProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E899B5A6A29959ADA688B757 /* TimetableProvider.swift */; };
+		4AD690F62B3CA198128DFF03 /* LessonNowWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D3A26A2B6A0E4E36FCEC27 /* LessonNowWidget.swift */; };
 		504F09C1E3D4E277FE1F271D /* TimetableProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E899B5A6A29959ADA688B757 /* TimetableProvider.swift */; };
 		50F87FA524C01E14E286E878 /* KretaOraWatchWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 58BA434157612CF57369B718 /* KretaOraWatchWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52D5453B917D7DBBA2CCF4CA /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC7463732693C934B03CBB4D /* Palette.swift */; };
@@ -131,6 +132,7 @@
 		E8E0ABBA15642EC20EACB544 /* HankenGrotesk.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3D78CE11FFD6C946F34C4475 /* HankenGrotesk.ttf */; };
 		EAD288B3769798F8BBB2D421 /* DayStartCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2297070D863E2A8FA951041 /* DayStartCard.swift */; };
 		EB7974CF3712442F35262A71 /* DayStartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B05A5546B350210325CE41 /* DayStartWidget.swift */; };
+		EE3070C82580C3DDD4B91FE9 /* WatchLessonCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CEDF167DFA16FFAAE88531E /* WatchLessonCard.swift */; };
 		EE4978F70C39964AF97DEC06 /* BricolageGrotesque-OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 783ED590C14C70F59BACA475 /* BricolageGrotesque-OFL.txt */; };
 		EFBA904C233DDF365B5B1504 /* KretaKit in Frameworks */ = {isa = PBXBuildFile; productRef = AADAE5F28F206FC7A266968D /* KretaKit */; };
 		F107A1CAF042CD9FA7985B43 /* WatchDayPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBE90CDC6BA6AED8EA446BE /* WatchDayPager.swift */; };
@@ -242,6 +244,7 @@
 		5700165CFC33D8FA85B98715 /* KretaOraWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KretaOraWatchApp.swift; sourceTree = "<group>"; };
 		58BA434157612CF57369B718 /* KretaOraWatchWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KretaOraWatchWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5CA500FD00B38344073C41EA /* BricolageGrotesque.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BricolageGrotesque.ttf; sourceTree = "<group>"; };
+		5CEDF167DFA16FFAAE88531E /* WatchLessonCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchLessonCard.swift; sourceTree = "<group>"; };
 		5D57A43860CA6B93D5530F4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5F19B39D167729E4ACC1B9A2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		65038B0EB4589ECD571D5885 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
@@ -273,6 +276,7 @@
 		CF4667FAB24409E0543B4332 /* WidgetGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetGallery.swift; sourceTree = "<group>"; };
 		D3AA155350363F0E9139543B /* DayNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayNotes.swift; sourceTree = "<group>"; };
 		D3EA27459BA8901F7BF1F6A6 /* LessonBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonBlock.swift; sourceTree = "<group>"; };
+		D6D3A26A2B6A0E4E36FCEC27 /* LessonNowWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonNowWidget.swift; sourceTree = "<group>"; };
 		DE71738BBA07BF49B2B1C409 /* LandingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingView.swift; sourceTree = "<group>"; };
 		DF350A883607307F9A888C81 /* LiveLessonAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveLessonAttributes.swift; sourceTree = "<group>"; };
 		DF60D2A208C46C4CF92CA9E9 /* KretaOraWatch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = KretaOraWatch.entitlements; sourceTree = "<group>"; };
@@ -453,6 +457,8 @@
 				7DF9F26581A309ED9F4951EE /* Info.plist */,
 				C2A34A0FE116616019D265B2 /* KretaOraWatchWidgetBundle.swift */,
 				46EF88722EC103F97A63FBD0 /* KretaOraWatchWidgets.entitlements */,
+				D6D3A26A2B6A0E4E36FCEC27 /* LessonNowWidget.swift */,
+				5CEDF167DFA16FFAAE88531E /* WatchLessonCard.swift */,
 			);
 			path = KretaOraWatchWidgets;
 			sourceTree = "<group>";
@@ -863,6 +869,7 @@
 				BC47DA9DE430125A54EFF695 /* L10n.swift in Sources */,
 				DEEB397980427C4A9F38D7BF /* LaunchOptions.swift in Sources */,
 				93CCAAD9A21826204D582DBE /* LessonDetailText.swift in Sources */,
+				4AD690F62B3CA198128DFF03 /* LessonNowWidget.swift in Sources */,
 				2406F6E4AEB47ADEC7B313F1 /* LiveLessonActivity.swift in Sources */,
 				5D4A26BCFFE113049E9C0F67 /* LiveLessonAttributes.swift in Sources */,
 				3E47D57C0A50A2ADFE70677D /* LivePreferences.swift in Sources */,
@@ -873,6 +880,7 @@
 				D99C71474CE29CE185063A08 /* Palette.swift in Sources */,
 				B0C3A71E769D4D196FA91CC8 /* SubjectSymbol.swift in Sources */,
 				504F09C1E3D4E277FE1F271D /* TimetableProvider.swift in Sources */,
+				EE3070C82580C3DDD4B91FE9 /* WatchLessonCard.swift in Sources */,
 				B4F42EFED46033A7ACB160B9 /* WidgetLayouts.swift in Sources */,
 				C8937B84EAB40E4FCCF7B681 /* WidgetParts.swift in Sources */,
 			);

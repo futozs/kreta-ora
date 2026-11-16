@@ -10,7 +10,11 @@ struct NextLessonWidget: Widget {
         .configurationDisplayName(L10n.widgetNextName)
         .description(L10n.widgetNextDescription)
         .supportedFamilies(Self.families)
+        #if os(iOS)
+        // The home screen cards paint to the edge. The watch keeps the system
+        // margins, or the Smart Stack card's text runs into its rounded corners.
         .contentMarginsDisabled()
+        #endif
     }
 
     #if os(iOS)
@@ -40,7 +44,13 @@ struct NextLessonEntryView: View {
         #endif
         default:
             NextLessonAccessoryView(entry: entry, family: family)
-                .containerBackground(for: .widget) { Color.clear }
+                .containerBackground(for: .widget) {
+                    #if os(watchOS)
+                    WatchLessonCard.background(for: entry.nextLesson)
+                    #else
+                    Color.clear
+                    #endif
+                }
         }
     }
 }

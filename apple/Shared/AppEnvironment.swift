@@ -20,6 +20,7 @@ enum AppEnvironment {
 enum WidgetKind {
     static let nextLesson = "NextLessonWidget"
     static let dayStart = "DayStartWidget"
+    static let lessonNow = "LessonNowWidget"
     static let liveLesson = "LiveLessonActivity"
 }
 

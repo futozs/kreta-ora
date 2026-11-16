@@ -7,5 +7,6 @@ struct KretaOraWatchWidgetBundle: WidgetBundle {
     var body: some Widget {
         NextLessonWidget()
         DayStartWidget()
+        LessonNowWidget()
     }
 }

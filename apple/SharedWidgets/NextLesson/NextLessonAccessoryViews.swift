@@ -15,8 +15,10 @@ struct NextLessonAccessoryView: View {
             case .accessoryInline: Inline(model: model, now: entry.date)
             #if os(watchOS)
             case .accessoryCorner: Corner(model: model, now: entry.date)
-            #endif
+            default: WatchLessonCard(model: model, now: entry.date)
+            #else
             default: Rectangular(model: model, now: entry.date)
+            #endif
             }
         } else {
             Text(entry.schedule == nil ? L10n.widgetSignedOut : L10n.nothingLeft)
@@ -26,6 +28,7 @@ struct NextLessonAccessoryView: View {
     }
 }
 
+#if os(iOS)
 /// Name, countdown and how far the lesson has got.
 private struct Rectangular: View {
     let model: NextLessonModel
@@ -63,6 +66,7 @@ private struct Rectangular: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
+#endif
 
 /// A ring that fills as the lesson runs, the time left inside.
 private struct Circular: View {
@@ -75,9 +79,10 @@ private struct Circular: View {
             ProgressView(timerInterval: model.lesson.start...model.lesson.end, countsDown: true) {
                 Text(Formatting.number(model.lesson))
             } currentValueLabel: {
-                Text(timerInterval: model.lesson.start...model.lesson.end, countsDown: true, showsHours: false)
+                LessonTimer(interval: model.lesson.start...model.lesson.end)
                     .kretaFont(KretaType.time.size(12).weight(800), scalesWithDynamicType: false)
                     .monospacedDigit()
+                    .minimumScaleFactor(0.6)
             }
             .progressViewStyle(.circular)
             .widgetAccentable()
@@ -87,9 +92,10 @@ private struct Circular: View {
                 VStack(spacing: 0) {
                     Text(Formatting.number(model.lesson))
                         .kretaFont(KretaType.number.size(15), scalesWithDynamicType: false)
-                    Text(timerInterval: min(now, model.lesson.start)...model.lesson.start, countsDown: true, showsHours: false)
+                    LessonTimer(interval: min(now, model.lesson.start)...model.lesson.start)
                         .kretaFont(KretaType.time.size(12).weight(800), scalesWithDynamicType: false)
                         .monospacedDigit()
+                        .minimumScaleFactor(0.6)
                         .multilineTextAlignment(.center)
                 }
             }
@@ -129,14 +135,10 @@ private struct Corner: View {
 
     var body: some View {
         Group {
-            switch model.phase {
-            case .running:
-                Text(timerInterval: model.lesson.start...model.lesson.end, countsDown: true, showsHours: false)
+            if let interval = LessonTimer.interval(model, now: now) {
+                LessonTimer(interval: interval)
                     .monospacedDigit()
-            case .soon:
-                Text(timerInterval: min(now, model.lesson.start)...model.lesson.start, countsDown: true, showsHours: false)
-                    .monospacedDigit()
-            case .later:
+            } else {
                 Text(KretaDate.timeString(model.lesson.start))
             }
         }

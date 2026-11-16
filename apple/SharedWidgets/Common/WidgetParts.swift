@@ -109,12 +109,9 @@ struct WidgetCountdown: View {
     }
 
     @ViewBuilder private var value: some View {
-        switch model.phase {
-        case .running:
-            Text(timerInterval: model.lesson.start...model.lesson.end, countsDown: true)
-        case .soon:
-            Text(timerInterval: min(now, model.lesson.start)...model.lesson.start, countsDown: true)
-        case .later:
+        if let interval = LessonTimer.interval(model, now: now) {
+            LessonTimer(interval: interval)
+        } else {
             Text(KretaDate.timeString(model.lesson.start))
         }
     }
@@ -124,6 +121,35 @@ struct WidgetCountdown: View {
         case .running: L10n.left
         case .soon: L10n.widgetStartsIn
         case .later: Formatting.dayWord(model.lesson.start, now: now)
+        }
+    }
+}
+
+/// A countdown the system ticks by itself. Always On redraws only about once a
+/// minute, so there it drops the seconds ("23 perc") instead of showing stale ones.
+struct LessonTimer: View {
+    let interval: ClosedRange<Date>
+    @Environment(\.isLuminanceReduced) private var isLuminanceReduced
+
+    var body: some View {
+        if isLuminanceReduced {
+            Text(.currentDate, format: .timer(
+                countingDownIn: interval.lowerBound..<interval.upperBound,
+                showsHours: false,
+                maxPrecision: .seconds(60)
+            ))
+        } else {
+            Text(timerInterval: interval, countsDown: true, showsHours: false)
+        }
+    }
+
+    /// What a lesson counts down over at `now`: to the bell while it runs, to
+    /// its start while it is near. Nil when it is far enough to show a clock time.
+    static func interval(_ model: NextLessonModel, now: Date) -> ClosedRange<Date>? {
+        switch model.phase {
+        case .running: model.lesson.start...model.lesson.end
+        case .soon: min(now, model.lesson.start)...model.lesson.start
+        case .later: nil
         }
     }
 }

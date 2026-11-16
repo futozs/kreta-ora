@@ -66,6 +66,7 @@ final class WatchModel: NSObject {
                 snapshot = received
             }
             WidgetCenter.shared.reloadAllTimelines()
+            WidgetCenter.shared.invalidateRelevance(ofKind: WidgetKind.lessonNow)
         } catch {
             logger.error("Could not apply the timetable from the phone: \(error.localizedDescription)")
         }

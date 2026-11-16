@@ -62,6 +62,8 @@ enum L10n {
     // Widgets
     static let widgetNextName = "Következő óra"
     static let widgetNextDescription = "A most tartó vagy a következő órád, a tantárgy színében."
+    static let widgetNowName = "Óra most"
+    static let widgetNowDescription = "Óra alatt és az előtte lévő szünetben magától felkerül a Smart Stack tetejére."
     static let widgetDayStartName = "Mikor kezdünk?"
     static let widgetDayStartDescription = "A következő tanítási nap első órája és a nap hossza."
     static let widgetSignedOut = "Jelentkezz be az alkalmazásban."

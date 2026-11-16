@@ -36,7 +36,7 @@ struct TimetableProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (TimetableEntry) -> Void) {
-        completion(context.isPreview ? .sample : TimetableEntry(date: Date(), schedule: storedSchedule()))
+        completion(context.isPreview ? .sample : TimetableEntry(date: Date(), schedule: Self.storedSchedule()))
     }
 
     /// One entry per moment the picture changes: every lesson start and end,
@@ -45,7 +45,7 @@ struct TimetableProvider: TimelineProvider {
     /// the app has not run for a while.
     func getTimeline(in context: Context, completion: @escaping (Timeline<TimetableEntry>) -> Void) {
         let now = Date()
-        let schedule = storedSchedule()
+        let schedule = Self.storedSchedule()
         let dates = schedule.map { Self.dates($0, now: now) } ?? [now]
         let entries = dates.map { date in
             TimetableEntry(date: date, schedule: schedule, relevance: schedule.map { Self.relevance($0, at: date) })
@@ -79,7 +79,7 @@ struct TimetableProvider: TimelineProvider {
         }
     }
 
-    private func storedSchedule() -> Schedule? {
+    static func storedSchedule() -> Schedule? {
         #if DEBUG
         if LaunchOptions.usesDemoData { return DemoTimetable.snapshot().schedule }
         #endif
